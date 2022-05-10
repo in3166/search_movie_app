@@ -1,6 +1,5 @@
 import styles from './Routes.module.scss'
 import {
-  BrowserRouter,
   Routes,
   Route,
 } from "react-router-dom"
@@ -18,13 +17,11 @@ const App = () => {
     <div className={styles.app}>
       <Container>
         <Header />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<MainPage />} />
-            <Route path="/favorites" element={<FavoritePage />} />
-          </Routes>
-          <MenuTab />
-        </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/favorites" element={<FavoritePage />} />
+        </Routes>
+        <MenuTab />
       </Container>
     </div>
   )

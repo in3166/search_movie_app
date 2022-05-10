@@ -19,29 +19,33 @@
   }
 }
 
+.searchInput {
+  width: 0%;
+}
+
 .searchForm {
-  display: flex;
-  flex-direction: row;
   width: 0;
   padding: 5px;
+  opacity: 0;
 
   & button {
-    height: 100%;
     color: rgb(240, 240, 240);
   }
 }
 
-.searchInput {
-  width: 0%;
-  transition: all 0.2s ease-in-out;
+button {
+  height: 100%;
 }
 
 .searchBarOpen {
+  display: flex;
+  flex-direction: row;
   width: 100%;
   height: 100%;
   padding: 5px;
   background-color: rgba(240, 240, 240, 56.2%);
   border-radius: 15px;
+  opacity: 1;
 
   & ~ .title {
     opacity: 0;
@@ -49,16 +53,21 @@
 
   .searchInput {
     width: 100%;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.1s linear;
   }
 }
 
-.darkMode {
-  height: 100%;
+.searchToggleButton {
+  color: rgb(255, 255, 255);
+}
 
+.searchButton {
+  display: none;
+}
+
+.darkMode {
   & > button {
     width: 30px;
-    height: 100%;
     color: rgb(245, 233, 69);
   }
 }
