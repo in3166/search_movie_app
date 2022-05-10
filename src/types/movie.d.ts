@@ -13,12 +13,6 @@ interface IMovieData {
     Response: string
 }
 
-interface IMovieError {
-    code: string
-    messgae: string
-    name: string
-    response: IMovieErrorResponse
-}
 
 interface IMovieErrorResponse {
     data: {
@@ -27,9 +21,17 @@ interface IMovieErrorResponse {
     }
 }
 
+// 사용 x?
+export interface IMovieError {
+    code: string
+    message: string
+    name: string
+    response: IMovieErrorResponse
+}
+
 export interface IMovieAPIRes {
     moviesResponse: IMovieData
     totalResults: string
     Search: IMovieItem[]
-    Error: IMovieError
+    Error: string
 }

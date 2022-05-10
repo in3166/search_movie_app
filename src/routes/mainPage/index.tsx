@@ -1,44 +1,59 @@
 import React, { useEffect, useState } from 'react'
 import { cx } from 'styles'
 import styles from './MainPage.module.scss'
-import ListItem from 'components/listItem/MovieListItem'
+import ListItem from 'components/movieListItem/MovieListItem'
 import axios, { AxiosResponse } from 'axios'
+import { useRecoilState } from 'hooks/state/'
 import { getMoviesList } from 'services/movie'
 import { IMovieError, IMovieItem } from 'types/movie'
+import { errorMovieState, MoviesState } from 'recoil/movieItem'
+import FavoriteModal from 'components/favoriteModal/FavoriteModal'
 
 const MainPage = () => {
-  const [movies, setMovies] = useState<IMovieItem[]>([])
-  const [error, setError] = useState<IMovieError>()
-  const [totalNumber, setTotalNumber] = useState(0)
+  const [movies, setMovies] = useRecoilState(MoviesState)
+  const [findError, setfindError] = useRecoilState(errorMovieState)
+  const [modalVisible, setModalVisible] = useState(false)
 
-  useEffect(() => {
-    const result = getMoviesList({ searchText: 'iron', pageNumber: String(3) })
+  // useEffect(() => {
+  //   const result = getMoviesList({ searchText: 'iron', pageNumber: String(3) })
 
-    result.then(res => {
-      // console.log(res.data.Search)
-      console.log(res.data)
-      setMovies(res.data.Search)
-      setTotalNumber(Number(res.data.totalResults))
-    })
-      .catch(err => {
-        setError(err)
-        console.log('err: ', err)
-      })
+  //   result.then(res => {
+  //     // console.log(res.data.Search)
+  //     console.log(res.data)
+  //     setMovies(res.data.Search)
+  //     setTotalNumber(Number(res.data.totalResults))
+  //   })
+  //     .catch(err => {
+  //       setError(err)
+  //       console.log('err: ', err)
+  //     })
+  // }, [])
 
+  const handleAddFavorite = () => {
+    console.log('add fav')
+  }
 
+  const handleOpenModal = () => {
+    setModalVisible(true)
+  }
 
-  }, [])
+  const handleCloseModal = () => {
+    setModalVisible(false)
+  }
 
   return (
     <div className={cx(styles.wrapper)}>
-      {error && <div>Error: {error.response.data.Error}</div>}
-      {!error && movies.length === 0 && <div>검색 결과가 없습니다.</div>}
-      <div>
-        <div>Total: {totalNumber}</div>
-        {movies.length > 0 && movies.map((value) => (
-          <ListItem key={value.imdbID} movie={value} />
+      {!findError.response && <div>Error: {findError.message}</div>}
+      {findError.response && movies?.length === 0 && <div><p>검색 결과가 없습니다.</p></div>}
+      {/* article? 확인 */}
+      <article>
+        {movies?.length > 0 && movies.map((value) => (
+          <ListItem key={value.imdbID} movie={value} onClick={handleOpenModal} />
         ))}
-      </div>
+      </article>
+      {modalVisible && (
+        <FavoriteModal onClick={handleAddFavorite} onCancel={handleCloseModal} content="추가" />
+      )}
     </div>
   )
 }
