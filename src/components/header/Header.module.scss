@@ -1,0 +1,64 @@
+@import '/src/styles/constants/colors';
+
+.wrapper {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 49px;
+  padding: 15px 15px 5px;
+
+  & .title {
+    color: rgb(240, 240, 240);
+  }
+
+  & button {
+    cursor: pointer;
+  }
+}
+
+.searchForm {
+  display: flex;
+  flex-direction: row;
+  width: 0;
+  padding: 5px;
+
+  & button {
+    height: 100%;
+    color: rgb(240, 240, 240);
+  }
+}
+
+.searchInput {
+  width: 0%;
+  transition: all 0.2s ease-in-out;
+}
+
+.searchBarOpen {
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  background-color: rgba(240, 240, 240, 56.2%);
+  border-radius: 15px;
+
+  & ~ .title {
+    opacity: 0;
+  }
+
+  .searchInput {
+    width: 100%;
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+.darkMode {
+  height: 100%;
+
+  & > button {
+    width: 30px;
+    height: 100%;
+    color: rgb(245, 233, 69);
+  }
+}
