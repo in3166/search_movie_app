@@ -2,8 +2,9 @@ import React, { MouseEventHandler, useRef, useState } from 'react'
 import { BsFillMoonFill } from 'react-icons/bs'
 import { FaSearch } from 'react-icons/fa'
 import { IoMdSunny } from 'react-icons/io'
+
 import { useRecoilState } from 'hooks/state/'
-import { currentMovieState, errorMovieState, MoviesState } from 'recoil/movieItem'
+import { currentMovieState, errorMovieState, MoviesState } from 'states/movieItem'
 import { cx } from 'styles'
 import styles from './Header.module.scss'
 import { getMoviesList } from 'services/movie'
@@ -15,22 +16,22 @@ const Header = () => {
   const [toggleSearchBar, setToggleSearchBar] = useState(false)
   const [searchText, setSearchText] = useState('')
 
-  const focusRef = useRef<HTMLInputElement | null>(null)
+  const focusRef = useRef<HTMLInputElement>(null)
 
   // set만 쓰게 바꾸기
   const [currentMovie, setCurrentMovie] = useRecoilState(currentMovieState)
   const [movies, setMovies] = useRecoilState(MoviesState)
   const [findError, setFindError] = useRecoilState(errorMovieState)
 
-
-  const handleChangeSearchText = (e: React.FormEvent<HTMLInputElement>) => {
+  // form event?
+  const handleChangeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.currentTarget.value)
   }
 
   const handleOpenSearchBar = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     setToggleSearchBar(true)
-    focusRef?.current?.focus()
+    focusRef.current?.focus()
   }
 
   const handleCloseSearchBar = () => {
@@ -43,8 +44,8 @@ const Header = () => {
   const handleClickDarkMode = () => {
     settoggleDarkMode(prev => !prev)
   }
-
-  const handleSubmitSearch = (e: React.SyntheticEvent) => {
+  // React. => 위에서 한번에 갖고 오기, FormEvent
+  const handleSubmitSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const target = e.currentTarget as typeof e.currentTarget & {
       searchInputText: { value: string };
@@ -82,9 +83,9 @@ const Header = () => {
   return (
     <header className={cx(styles.wrapper)}>
       <div className={cx(styles.search)} ref={formRef} >
-        {!toggleSearchBar && (<button type="button" onClick={handleOpenSearchBar} className={cx(styles.searchToggleButton)}>
+        <button type="button" onClick={handleOpenSearchBar} className={cx(styles.searchToggleButton, { [styles.hideToggleButton]: toggleSearchBar })}>
           <FaSearch size="1.1em" />
-        </button>)}
+        </button>
 
         <form onSubmit={handleSubmitSearch} className={cx(styles.searchForm, { [styles.searchBarOpen]: toggleSearchBar })}>
           <input type="text" title="Search Bar" ref={focusRef} name="searchInputText" value={searchText} onChange={handleChangeSearchText} className={cx(styles.searchInput)} />

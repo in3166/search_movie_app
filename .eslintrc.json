@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb", "airbnb/hooks", "react-app", "prettier"],
+  "extends": ["airbnb", "airbnb/hooks", "react-app", "prettier", "plugin:react/recommended", "plugin:prettier/recommend"],
   "env": {
     "browser": true,
     "jasmine": true,
@@ -43,7 +43,7 @@
         "devDependencies": [".storybook/**", "src/stories/**"]
       }
     ],
-    // "max-lines": ["warn", 150],
+    "max-lines": ["warn", 130],
     "no-param-reassign": ["error", { "props": false }],
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
