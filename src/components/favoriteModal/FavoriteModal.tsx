@@ -7,13 +7,14 @@ interface IBackDropProps {
 
 
 interface IModalProps {
-  onClick: React.MouseEventHandler<HTMLElement>
+  onClick: React.MouseEventHandler<HTMLButtonElement>
   content: string
-  onCancel: React.MouseEventHandler<HTMLElement>
+  onCancel: React.MouseEventHandler<HTMLButtonElement>
+
 }
 
 const BackDrop = ({ onCancel }: IBackDropProps) => {
-  return <div className={styles.backDrop} onClick={onCancel} role="presentation" />
+  return <div className={styles.backDrop} onClick={onCancel} role="presentation" tabIndex={-1} />
 }
 
 const FavoriteModalOverlay = ({ onClick, content, onCancel }: IModalProps) => {
@@ -25,7 +26,7 @@ const FavoriteModalOverlay = ({ onClick, content, onCancel }: IModalProps) => {
       <div className={styles.content}>
         <p>즐겨찾기를 {content} 하시겠습니까?</p>
       </div>
-      <footer className={styles.actions}>
+      <footer className={styles.footer}>
         <button type="button" onClick={onClick}>{content}</button>
         <button type="button" onClick={onCancel}>취소</button>
       </footer>

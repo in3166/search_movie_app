@@ -1,4 +1,4 @@
-@import '/src/styles/constants/colors';
+@use '/src/styles/constants/colors';
 
 .wrapper {
   position: absolute;
@@ -11,7 +11,10 @@
   padding: 15px 15px 5px;
 
   & .title {
-    color: rgb(240, 240, 240);
+    position: absolute;
+    left: 50%;
+    color: colors.$WHITE;
+    transform: translateX(-50%);
   }
 
   & button {
@@ -27,6 +30,7 @@
   width: 0;
   padding: 5px;
   opacity: 0;
+  transition: all 0.1s linear;
 
   & button {
     color: rgb(240, 240, 240);
@@ -53,12 +57,23 @@ button {
 
   .searchInput {
     width: 100%;
-    transition: all 0.1s linear;
   }
 }
 
 .searchToggleButton {
+  position: absolute;
+  top: 0;
+  width: 23px;
   color: rgb(255, 255, 255);
+  opacity: 1;
+  transition: all 0.2s linear;
+}
+
+.hideToggleButton {
+  position: absolute;
+  display: none;
+  opacity: 0;
+  transition: all 0.2s linear;
 }
 
 .searchButton {

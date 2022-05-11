@@ -16,14 +16,16 @@ interface MovieListItemProps {
 
 const MovieListItem = ({ movie, onClick }: MovieListItemProps) => {
   return (
-    <div className={cx(styles.itemWrapper)} onClick={onClick} role="button" tabIndex={0}>
-      <div className={cx(styles.poster)}><img src={movie.Poster} alt="movie poster" /></div>
-      <div>
-        <div>{movie.Title}</div>
-        <div>{movie.Year}</div>
-        <div>{movie.Type}</div>
-      </div>
-    </div>
+    <li className={cx(styles.itemWrapper)}>
+      <button type="button" onClick={onClick}>
+        <div className={cx(styles.poster)}><img src={movie.Poster} alt="movie poster" /></div>
+        <div>
+          <div>{movie.Title}</div>
+          <div>{movie.Year}</div>
+          <div>{movie.Type}</div>
+        </div>
+      </button>
+    </li>
   )
 }
 

@@ -15,31 +15,25 @@
   top: 30vh;
   left: 50%;
   z-index: 100;
-  width: 26%;
+  width: 300px;
+  height: 200px;
   overflow: hidden;
   color: colors.$MODAL_TEXT;
   background-color: colors.$MODAL_BACKGROUND;
-  border-radius: 15px;
-  box-shadow: 10px 10px 5px #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 #ffffff;
   transform: translateX(-50%);
-
-  & button {
-    padding: 7px 13px;
-    margin: 5px;
-    color: colors.$WHITE;
-    background-color: colors.$MODAL_BUTTON_BACKGROUND;
-    border: 1px solid colors.$BUTTON_BORDER;
-    border-radius: 10px;
-  }
 }
 
 .header {
   padding: 1rem;
   background: colors.$MODAL_HEADER;
+  border-bottom: 1px solid colors.$GRAYA;
 
   h2 {
     margin: 0;
-    color: rgb(255, 255, 255);
+    font-weight: 500;
+    color: colors.$HEADER_TEXT;
   }
 }
 
@@ -47,8 +41,17 @@
   padding: 1em;
 }
 
-.actions {
+.footer {
   display: flex;
-  justify-content: flex-end;
-  padding: 1em;
+  justify-content: space-between;
+
+  & button {
+    width: 100%;
+    padding: 7px;
+    margin: 15px;
+    color: colors.$WHITE;
+    background-color: colors.$MODAL_BUTTON_BACKGROUND;
+    border: 1px solid colors.$BUTTON_BORDER;
+    border-radius: 10px;
+  }
 }
