@@ -71,6 +71,7 @@ const getMoviesList = (params: Params) =>
   axiosInstance('/', {
     params: {
       ...params,
+      apikey: process.env.REACT_APP_MOVIE_API_KEY,
     },
   })
 
@@ -78,6 +79,7 @@ const getMoreMoviesList = (params: Params) =>
   axiosInstance.get(`/`, {
     params: {
       ...params,
+      apikey: process.env.REACT_APP_MOVIE_API_KEY,
     },
   })
 
