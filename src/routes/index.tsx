@@ -9,6 +9,9 @@ import GNB from './_shared/GNB'
 
 // TODO: 추후 라우팅, outlet
 const App = () => {
+  console.log(process.env.PUBLIC_URL)
+  console.log(process.env.REACT_APP_MOVIE_API_KEY)
+  console.log(process.env.REACT_PUBLIC_URL)
   return (
     <div className={styles.app}>
       <Container>
