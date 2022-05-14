@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
   baseURL: MOVIE_BASE_URL,
   timeout: 5000,
 })
-
+console.log(process.env.REACT_APP_MOVIE_API_KEY)
 axiosInstance.interceptors.request.use((config) => {
   config.params = {
     apikey: process.env.REACT_APP_MOVIE_API_KEY,
