@@ -1,4 +1,5 @@
 {
+  "homepage": "http://in3166.github.io/wanted_grip_assignment",
   "name": "foundation-ts",
   "version": "0.1.0",
   "private": true,
@@ -6,7 +7,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -43,6 +46,7 @@
     "i18next-browser-languagedetector": "^6.1.4",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-i18next": "^11.16.9",
     "react-icons": "^4.3.1",
     "react-i18next": "^11.16.9",
     "react-router-dom": "^6.3.0",
@@ -73,6 +77,7 @@
     "eslint-plugin-react-hooks": "^4.5.0",
     "eslint-plugin-testing-library": "^5.3.1",
     "eslint-webpack-plugin": "^3.1.1",
+    "gh-pages": "^4.0.0",
     "postcss-scss": "^4.0.4",
     "prettier": "^2.6.2",
     "sass": "^1.51.0",
