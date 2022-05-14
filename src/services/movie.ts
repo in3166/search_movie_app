@@ -1,6 +1,4 @@
 import axios from 'axios'
-import store from 'store'
-import { IMovieAPIRes, IMovieItem } from 'types/movie.d'
 
 const MOVIE_BASE_URL = 'http://www.omdbapi.com'
 
@@ -30,6 +28,7 @@ interface ISearchResponse {
   Year: string
   imdbID: string
 }
+// object로 넘기기
 
 axiosInstance.interceptors.response.use(
   (res) => {
