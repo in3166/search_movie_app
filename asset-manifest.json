@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/wanted_grip_assignment/static/css/main.4f674148.css",
-    "main.js": "/wanted_grip_assignment/static/js/main.4e54df18.js",
-    "static/js/787.68ea1acb.chunk.js": "/wanted_grip_assignment/static/js/787.68ea1acb.chunk.js",
-    "static/media/defaultImg.png": "/wanted_grip_assignment/static/media/defaultImg.34542f424edf122af560.png",
-    "index.html": "/wanted_grip_assignment/index.html",
-    "main.4f674148.css.map": "/wanted_grip_assignment/static/css/main.4f674148.css.map",
-    "main.4e54df18.js.map": "/wanted_grip_assignment/static/js/main.4e54df18.js.map",
-    "787.68ea1acb.chunk.js.map": "/wanted_grip_assignment/static/js/787.68ea1acb.chunk.js.map"
+    "main.css": "/static/css/main.9c5537c1.css",
+    "main.js": "/static/js/main.00acb158.js",
+    "static/js/787.68ea1acb.chunk.js": "/static/js/787.68ea1acb.chunk.js",
+    "static/media/defaultImg.png": "/static/media/defaultImg.34542f424edf122af560.png",
+    "index.html": "/index.html",
+    "main.9c5537c1.css.map": "/static/css/main.9c5537c1.css.map",
+    "main.00acb158.js.map": "/static/js/main.00acb158.js.map",
+    "787.68ea1acb.chunk.js.map": "/static/js/787.68ea1acb.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4f674148.css",
-    "static/js/main.4e54df18.js"
+    "static/css/main.9c5537c1.css",
+    "static/js/main.00acb158.js"
   ]
 }
