@@ -1,42 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import { lazy, Suspense, useRef, useState } from 'react'
+import { IMovieItem } from 'types/movie'
+import { useRecoil } from 'hooks/state/'
+import useIntersectionObserver from 'hooks/infiniteScroll'
+import { currentPageState, errorMovieState, moviesState } from 'states/movieItem'
+import { getMoreMoviesList } from 'services/movie'
+
+import { Modal, Loading, SearchBar } from 'components'
 import { cx } from 'styles'
 import styles from './MainPage.module.scss'
-import ListItem from 'components/movieListItem/MovieListItem'
-import axios, { AxiosResponse } from 'axios'
-import { useRecoilState, useRecoilValue, useRecoil } from 'hooks/state/'
-import { getMoviesList } from 'services/movie'
-import { IMovieError, IMovieItem } from 'types/movie'
-import { errorMovieState, MoviesState } from 'states/movieItem'
-import FavoriteModal from 'components/favoriteModal/FavoriteModal'
+
+const LazyMovieItem = lazy(() => import('components/MovieItem'))
 
 const MainPage = () => {
+  const [movies, setMovies, resetMovies] = useRecoil(moviesState)
+  const [currentPage, setCurrentPage, resetCurrentPage] = useRecoil(currentPageState)
+  const [searchError, setSearchError] = useRecoil(errorMovieState)
 
-  const [movies, ,] = useRecoil(MoviesState)
-  // const movies = useRecoilValue(MoviesState)
-  const findError = useRecoilValue(errorMovieState)
+  const [rootTarget, setRootTarget] = useState<HTMLElement | null | undefined>(null)
+  const [selectedMovie, setSelectedMovie] = useState<IMovieItem | null>(null)
   const [modalVisible, setModalVisible] = useState(false)
+  const [isFetching, setIsFetching] = useState(false)
 
+  const mainRef = useRef<HTMLUListElement>(null)
 
-  // useEffect(() => {
-  //   const result = getMoviesList({ searchText: 'iron', pageNumber: String(3) })
-
-  //   result.then(res => {
-  //     // console.log(res.data.Search)
-  //     console.log(res.data)
-  //     setMovies(res.data.Search)
-  //     setTotalNumber(Number(res.data.totalResults))
-  //   })
-  //     .catch(err => {
-  //       setError(err)
-  //       console.log('err: ', err)
-  //     })
-  // }, [])
-
-  const handleAddFavorite = () => {
-    console.log('add fav')
-  }
-
-  const handleOpenModal = () => {
+  const handleOpenModal = (value: IMovieItem) => {
+    setSelectedMovie(value)
     setModalVisible(true)
   }
 
@@ -44,21 +32,89 @@ const MainPage = () => {
     setModalVisible(false)
   }
 
-  return (
-    <main className={cx(styles.wrapper)}>
-      {!findError.response && <div>Error: {findError.message}</div>}
-      {findError.response && movies?.length === 0 && <div><p>검색 결과가 없습니다.</p></div>}
-      {/* article? 확인, undefined 뜨면 []로 초기화 */}
-      <ul className={styles.movieLists}>
-        {movies?.length > 0 && movies.map((value) => (
-          <ListItem key={value.imdbID} movie={value} onClick={handleOpenModal} />
-        ))}
-      </ul>
+  // TODO: 분리
+  const onIntersect: IntersectionObserverCallback = ([entries]) => {
+    if (entries.isIntersecting) {
+      setIsFetching(true)
+      const { searchText, page, totalResults } = currentPage
 
-      {modalVisible && (
-        <FavoriteModal onClick={handleAddFavorite} onCancel={handleCloseModal} content="추가" />
-      )}
-    </main>
+      if (totalResults <= movies.length) {
+        setIsFetching(false)
+        return
+      }
+
+      const pageNumber = page + 1
+      getMoreMoviesList({ searchText, pageNumber })
+        .then((res) => {
+          setMovies((prev) => [...prev, ...res.data.movieList])
+          setCurrentPage((prev) => {
+            return { ...prev, page: pageNumber }
+          })
+        })
+        .catch((err) => {
+          resetMovies()
+          resetCurrentPage()
+          setSearchError(err.data.error)
+        })
+        .finally(() => {
+          setIsFetching(false)
+        })
+    }
+  }
+
+  const { setTarget } = useIntersectionObserver({
+    root: rootTarget,
+    rootMargin: '10px',
+    threshold: 0,
+    onIntersect,
+  })
+
+  const hadleMainScrollTop = () => {
+    if (mainRef?.current) {
+      mainRef.current.scrollTo(0, 0)
+    }
+  }
+
+  // TODO: suspense 제대로 쓰기
+  return (
+    <>
+      <SearchBar hadleMainScrollTop={hadleMainScrollTop} />
+      <main className={styles.wrapper} ref={setRootTarget}>
+        {searchError.isError && (
+          <div className={styles.infoText}>
+            <p>Error: {searchError.error}</p>
+          </div>
+        )}
+        {!searchError.isError && movies?.length === 0 && (
+          <div className={styles.infoText}>
+            <p>검색 결과가 없습니다.</p>
+          </div>
+        )}
+        {/* {isFetching && <Loading />} */}
+
+        {movies.length > 0 && (
+          <ul className={cx({ [styles.movieLists]: movies.length > 0 })} ref={mainRef}>
+            <Suspense fallback={<Loading />}>
+              {movies.map((value, index) => {
+                return (
+                  <LazyMovieItem
+                    index={index}
+                    key={`${value.imdbID}-${index + 1}`}
+                    movie={value}
+                    isDraggable={false}
+                    onClick={() => handleOpenModal(value)}
+                  />
+                )
+              })}
+              {!isFetching && <li ref={setTarget} className={styles.scrollTargetLi} />}
+            </Suspense>
+          </ul>
+        )}
+        {modalVisible && selectedMovie && (
+          <Modal onCancel={handleCloseModal} isRemove={selectedMovie?.isLiked} movie={selectedMovie} />
+        )}
+      </main>
+    </>
   )
 }
 

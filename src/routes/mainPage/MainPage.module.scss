@@ -1,9 +1,12 @@
-@import '/src/styles/constants/colors';
+@use 'styles/constants/colors';
+@use 'styles/mixins/_animation';
 
 .wrapper {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  // justify-content: center;
   height: 100%;
   overflow: scroll;
 
@@ -12,6 +15,19 @@
   }
 }
 
-.movieLists {
+.infoText {
+  display: flex;
+  align-items: center;
   height: 100%;
+}
+
+.movieLists {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+}
+
+.scrollTargetLi {
+  padding-top: 1px;
 }

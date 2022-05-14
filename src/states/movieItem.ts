@@ -1,38 +1,30 @@
-import { IMovieError, IMovieItem } from 'types/movie'
+import { IMovieErrorResponse, IMovieItem, ICurrentMovie } from 'types/movie'
 // src/recoil/Movie.ts
-import { atom } from "recoil"
-
-
-export interface ICurrenMovie {
-  title: string
-  page: number
-}
-
-export interface IFindError {
-  response: boolean
-  message: string
-}
+import { atom } from 'hooks/state/index'
 
 // Movie Search Input에서 입력하는 값을 atom으로 관리
-export const currentMovieState = atom<ICurrenMovie>({
+export const currentPageState = atom<ICurrentMovie>({
   key: 'currentMovieState',
   default: {
-    title: '',
-    page: 1
-  }
+    searchText: '',
+    page: 1,
+    totalResults: 0,
+  },
 })
 
 // Movie Search Input에서 입력하는 값을 atom으로 관리
-export const errorMovieState = atom<IFindError>({
+export const errorMovieState = atom<IMovieErrorResponse>({
   key: 'errorMovieState',
   default: {
-    response: true,
+    isError: false,
     message: '',
-  }
+    code: '',
+    error: '',
+  },
 })
 
 // 업데이트 시킬 Movies atom 배열
-export const MoviesState = atom<IMovieItem[]>({
-  key: 'Movies',
+export const moviesState = atom<IMovieItem[]>({
+  key: 'movies',
   default: [],
 })
