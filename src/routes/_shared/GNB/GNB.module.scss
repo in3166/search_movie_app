@@ -1,4 +1,4 @@
-@import '/src/styles/constants/colors';
+@use '/src/styles/constants/colors';
 
 .wrapper {
   position: absolute;
@@ -10,10 +10,26 @@
   justify-content: space-between;
   width: 300px;
   height: 47px;
-  padding: 7px;
+  padding: 2px 7px;
   background-color: #201f32;
   border-radius: 28px;
   transform: translateX(-50%);
+
+  & ul {
+    display: flex;
+    width: 100%;
+  }
+
+  & li {
+    display: flex;
+    width: 100%;
+    padding: 0 13px;
+
+    & a {
+      display: block;
+      padding: 3px;
+    }
+  }
 }
 
 .menu {
@@ -23,7 +39,7 @@
 
   svg {
     height: 100%;
-    color: rgb(255, 255, 255);
+    color: rgb(138, 138, 138);
   }
   text-align: center;
   text-decoration: none;
@@ -33,11 +49,17 @@
   }
 
   &:hover {
-    background-color: rgba(102, 102, 102, 43.2%);
+    background-color: rgb(102, 102, 102);
     border-radius: 20px;
   }
 
   &:active {
-    background-color: rgba(31, 30, 30, 43.2%);
+    background-color: rgb(82, 82, 82);
+  }
+}
+
+.active {
+  svg {
+    color: rgb(255, 255, 255);
   }
 }

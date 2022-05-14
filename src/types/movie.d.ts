@@ -1,37 +1,30 @@
 interface IMovieItem {
-    Poster: string
-    Title: string
-    Type: string
-    Year: string
-    imdbID: string
+  poster: string
+  title: string
+  type: string
+  year: string
+  imdbID: string
+  isLiked: boolean
 }
 
-
-interface IMovieData {
-    Search: IMovieItem[]
-    totalResult: string
-    Response: string
+interface ICurrentMovie {
+  searchText: string
+  page: number
+  totalResults: number
 }
-
 
 interface IMovieErrorResponse {
-    data: {
-        Error: string
-        Response: string
-    }
+  code?: string
+  isError: boolean
+  error: string
+  message?: string
 }
 
-// 사용 x?
-export interface IMovieError {
-    code: string
-    message: string
-    name: string
-    response: IMovieErrorResponse
+interface IMovieAPIRes {
+  data: {
+    movieList: IMovieItem[]
+  }
+  error: IMovieErrorResponse
 }
 
-export interface IMovieAPIRes {
-    moviesResponse: IMovieData
-    totalResults: string
-    Search: IMovieItem[]
-    Error: string
-}
+export { IMovieItem, ICurrentMovie, IMovieErrorResponse, IMovieAPIRes }

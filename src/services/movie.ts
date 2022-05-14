@@ -1,21 +1,85 @@
-import axios from "axios"
-import { IMovieAPIRes } from 'types/movie.d'
+import axios from 'axios'
+import store from 'store'
+import { IMovieAPIRes, IMovieItem } from 'types/movie.d'
 
 const MOVIE_BASE_URL = 'http://www.omdbapi.com'
 
 interface Params {
-    searchText: string
-    pageNumber: number
+  searchText: string
+  pageNumber: number
 }
 
-const api = axios.create({ baseURL: `${MOVIE_BASE_URL}` })// ??
+const axiosInstance = axios.create({
+  baseURL: MOVIE_BASE_URL,
+  timeout: 5000,
+})
 
-// after request 를 만들어서 앞에 대문자거나 snake case 처리
-// 통일된 형태로
-// axios 인터셉터 - npm camel case
-const getMoviesList = (params: Params) => {
-    return axios.get<IMovieAPIRes>(`${MOVIE_BASE_URL}/?apikey=${process.env.REACT_APP_MOVIE_API_KEY}&s=${params.searchText}&page=${params.pageNumber}`)
+axiosInstance.interceptors.request.use((config) => {
+  config.params = {
+    apikey: process.env.REACT_APP_MOVIE_API_KEY,
+    s: config.params.searchText,
+    page: config.params.pageNumber,
+  }
+  return config
+})
+
+interface ISearchResponse {
+  Poster: string
+  Title: string
+  Type: string
+  Year: string
+  imdbID: string
 }
-// object로 넘기기
 
-export { getMoviesList }
+axiosInstance.interceptors.response.use(
+  (res) => {
+    if (res.data.Response === 'False') {
+      res.data.error = {
+        isError: true,
+        error: res?.data?.Error,
+        code: res?.status,
+        message: res?.data?.Error,
+      }
+      return Promise.reject(res)
+    }
+
+    res.data.movieList = res.data.Search.map((value: ISearchResponse) => {
+      return {
+        poster: value.Poster,
+        title: value.Title,
+        type: value.Type,
+        year: value.Year,
+        imdbID: value.imdbID,
+        isLiked: false,
+      }
+    })
+    return Promise.resolve(res)
+  },
+  (error) => {
+    error.data = error.data || {}
+    error.data.error = error.data.error || {}
+    error.data.error = {
+      isError: error?.response.data.response !== 'False',
+      error: error?.response.data.Error,
+      code: error.code,
+      message: error.message,
+    }
+    return Promise.reject(error)
+  }
+)
+
+const getMoviesList = (params: Params) =>
+  axiosInstance('/', {
+    params: {
+      ...params,
+    },
+  })
+
+const getMoreMoviesList = (params: Params) =>
+  axiosInstance.get(`/`, {
+    params: {
+      ...params,
+    },
+  })
+
+export { getMoviesList, getMoreMoviesList }
