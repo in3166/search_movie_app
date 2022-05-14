@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/wanted_grip_assignment/static/css/main.3241231d.css",
+    "main.css": "/wanted_grip_assignment/static/css/main.7d5f3d14.css",
     "main.js": "/wanted_grip_assignment/static/js/main.810bc3c8.js",
     "static/js/787.68ea1acb.chunk.js": "/wanted_grip_assignment/static/js/787.68ea1acb.chunk.js",
     "static/media/defaultImg.png": "/wanted_grip_assignment/static/media/defaultImg.34542f424edf122af560.png",
     "index.html": "/wanted_grip_assignment/index.html",
-    "main.3241231d.css.map": "/wanted_grip_assignment/static/css/main.3241231d.css.map",
+    "main.7d5f3d14.css.map": "/wanted_grip_assignment/static/css/main.7d5f3d14.css.map",
     "main.810bc3c8.js.map": "/wanted_grip_assignment/static/js/main.810bc3c8.js.map",
     "787.68ea1acb.chunk.js.map": "/wanted_grip_assignment/static/js/787.68ea1acb.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3241231d.css",
+    "static/css/main.7d5f3d14.css",
     "static/js/main.810bc3c8.js"
   ]
 }
