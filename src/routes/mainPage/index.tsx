@@ -1,4 +1,4 @@
-import { lazy, Suspense, useRef, useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import store from 'store'
 
 import { cx } from 'styles'
@@ -8,7 +8,7 @@ import { useRecoil } from 'hooks/state/'
 import useIntersectionObserver from 'hooks/infiniteScroll'
 import { currentPageState, errorMovieState, moviesState } from 'states/movieItem'
 import { getMoreMoviesList } from 'services/movie'
-import { Modal, Loading, SearchBar } from 'components'
+import { Modal, Loading } from 'components'
 import { LOCAL_STORAGE_KEY } from 'utils/constants'
 import { changeMovieListLike } from 'utils/changeIsLiked'
 
@@ -23,8 +23,6 @@ const MainPage = () => {
   const [selectedMovie, setSelectedMovie] = useState<IMovieItem | null>(null)
   const [modalVisible, setModalVisible] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
-
-  const mainRef = useRef<HTMLUListElement>(null)
 
   const handleOpenModal = (value: IMovieItem) => {
     setSelectedMovie(value)
@@ -79,51 +77,42 @@ const MainPage = () => {
     onIntersect,
   })
 
-  const hadleMainScrollTop = () => {
-    if (mainRef?.current) {
-      mainRef.current.scrollTo(0, 0)
-    }
-  }
-
   return (
-    <>
-      <SearchBar hadleMainScrollTop={hadleMainScrollTop} />
-      <main className={styles.wrapper} ref={setRootTarget}>
-        {searchError.isError && (
-          <div className={styles.infoText}>
-            <p>Error: {searchError.error}</p>
-          </div>
-        )}
-        {!searchError.isError && movies?.length === 0 && (
-          <div className={styles.infoText}>
-            <p>검색 결과가 없습니다.</p>
-          </div>
-        )}
-        {isFetching && <Loading />}
+    <main className={styles.wrapper} ref={setRootTarget}>
+      {searchError.isError && (
+        <div className={styles.infoText}>
+          <p>Error: {searchError.error}</p>
+        </div>
+      )}
+      {!searchError.isError && movies?.length === 0 && (
+        <div className={styles.infoText}>
+          <p>검색 결과가 없습니다.</p>
+        </div>
+      )}
+      {isFetching && <Loading />}
 
-        {movies.length > 0 && (
-          <ul className={cx({ [styles.movieLists]: movies.length > 0 })} ref={mainRef}>
-            <Suspense fallback={<Loading />}>
-              {movies.map((value, index) => {
-                return (
-                  <LazyMovieItem
-                    index={index}
-                    key={`${value.imdbID}-${index + 1}`}
-                    movie={value}
-                    isDraggable={false}
-                    onClick={() => handleOpenModal(value)}
-                  />
-                )
-              })}
-              {!isFetching && <li ref={setTarget} className={styles.scrollTargetLi} />}
-            </Suspense>
-          </ul>
-        )}
-        {modalVisible && selectedMovie && (
-          <Modal onCancel={handleCloseModal} isRemove={selectedMovie?.isLiked} movie={selectedMovie} />
-        )}
-      </main>
-    </>
+      {movies.length > 0 && (
+        <ul className={cx({ [styles.movieLists]: movies.length > 0 })}>
+          <Suspense fallback={<Loading />}>
+            {movies.map((value, index) => {
+              return (
+                <LazyMovieItem
+                  index={index}
+                  key={`${value.imdbID}-${index + 1}`}
+                  movie={value}
+                  isDraggable={false}
+                  onClick={() => handleOpenModal(value)}
+                />
+              )
+            })}
+            {!isFetching && <li ref={setTarget} className={styles.scrollTargetLi} />}
+          </Suspense>
+        </ul>
+      )}
+      {modalVisible && selectedMovie && (
+        <Modal onCancel={handleCloseModal} isRemove={selectedMovie?.isLiked} movie={selectedMovie} />
+      )}
+    </main>
   )
 }
 
