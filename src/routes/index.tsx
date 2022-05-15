@@ -1,14 +1,17 @@
 import styles from './Routes.module.scss'
 import { Routes, Route } from 'react-router-dom'
 
-import MainPage from './MainPage'
-import FavoritePage from './FavoritePage'
+import MainPage from './mainPage'
+import FavoritePage from './favoritePage'
 import Container from 'components/container'
 import Header from 'components/Header'
 import GNB from './_shared/GNB'
 
 // TODO: 추후 라우팅, outlet
 const App = () => {
+  console.log('REACT_APP_MOVIE_API_KEY: ', process.env.REACT_APP_MOVIE_API_KEY)
+  console.log('MOVIE_API_KEY: ', process.env.MOVIE_API_KEY)
+  console.log('PUBLIC_URL: ', process.env.PUBLIC_URL)
   return (
     <div className={styles.app}>
       <Container>
