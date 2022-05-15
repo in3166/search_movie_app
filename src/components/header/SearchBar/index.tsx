@@ -10,6 +10,7 @@ import { currentPageState, errorMovieState, moviesState } from 'states/movieItem
 import { favoritesState } from 'states/favoriteItem'
 import { getMoviesList } from 'services/movie'
 import { changeMovieListLike } from 'utils/changeIsLiked'
+import { useErrorHandler } from 'react-error-boundary'
 
 const SearchBar = () => {
   const { pathname } = useLocation()
@@ -23,7 +24,9 @@ const SearchBar = () => {
   const [favorites, ,] = useRecoil(favoritesState)
   const [, setError, resetError] = useRecoil(errorMovieState)
 
+  // Search Input에 focus
   const focusRef = useRef<HTMLInputElement>(null)
+  const handleError = useErrorHandler()
 
   const handleChangeSearchText = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.currentTarget.value)
@@ -53,8 +56,17 @@ const SearchBar = () => {
       handleCloseSearchBar()
       return
     }
+
     getMoviesList({ searchText: text, pageNumber: 1 })
       .then((res) => {
+        // 결과가 없거나 너무 많은 경우 체크
+        if (res.data.Response === 'False') {
+          setError(res.data.error)
+          resetMovies()
+          resetCurrentPage()
+          return
+        }
+
         const totalResults = parseInt(res.data.totalResults, 10)
         resetError()
         const tempList = changeMovieListLike(res.data.movieList, favorites)
@@ -65,6 +77,8 @@ const SearchBar = () => {
         setError(err.data.error)
         resetMovies()
         resetCurrentPage()
+        // error를 ErrorBoundary에 알림 (ex. api key가 다른 경우)
+        handleError(err.data.error)
       })
       .finally(() => {
         setSearchText('')
