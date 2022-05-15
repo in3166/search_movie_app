@@ -11,11 +11,7 @@ import { favoritesState } from 'states/favoriteItem'
 import { getMoviesList } from 'services/movie'
 import { changeMovieListLike } from 'utils/changeIsLiked'
 
-interface ISearchBarProps {
-  hadleMainScrollTop?: () => void
-}
-
-const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
+const SearchBar = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
@@ -47,7 +43,7 @@ const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
 
   const handleSubmitSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (hadleMainScrollTop) hadleMainScrollTop()
+    setMovies([])
     const target = e.currentTarget as typeof e.currentTarget & {
       searchInputText: { value: string }
     }
