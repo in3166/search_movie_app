@@ -20,6 +20,7 @@ jobs:
         yarn install
         yarn run build
       env:
+        MOVIE_API_KEY: ${{ secrets.MOVIE_API_KEY }}
         REACT_APP_MOVIE_API_KEY: ${{ secrets.REACT_APP_MOVIE_API_KEY }}
         PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
 

@@ -12,9 +12,10 @@ const axiosInstance = axios.create({
   timeout: 5000,
 })
 console.log(process.env.REACT_APP_MOVIE_API_KEY)
+console.log(process.env.MOVIE_API_KEY)
 axiosInstance.interceptors.request.use((config) => {
   config.params = {
-    apikey: process.env.REACT_APP_MOVIE_API_KEY,
+    apikey: process.env.MOVIE_API_KEY,
     s: config.params.searchText,
     page: config.params.pageNumber,
   }
@@ -71,7 +72,7 @@ const getMoviesList = (params: Params) =>
   axiosInstance('/', {
     params: {
       ...params,
-      apikey: process.env.REACT_APP_MOVIE_API_KEY,
+      apikey: process.env.MOVIE_API_KEY,
     },
   })
 
@@ -79,7 +80,7 @@ const getMoreMoviesList = (params: Params) =>
   axiosInstance.get(`/`, {
     params: {
       ...params,
-      apikey: process.env.REACT_APP_MOVIE_API_KEY,
+      apikey: process.env.MOVIE_API_KEY,
     },
   })
 
