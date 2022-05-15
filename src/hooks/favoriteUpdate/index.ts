@@ -4,6 +4,7 @@ import { moviesState } from 'states/movieItem'
 import { IMovieItem } from 'types/movie'
 import store from 'store'
 import { useCallback } from 'react'
+import { LOCAL_STORAGE_KEY } from 'utils/constants'
 
 interface IUseFavoriteUpdateProps {
   selectedMovie: IMovieItem | null
@@ -37,14 +38,14 @@ const useFavoriteUpdate = ({ selectedMovie }: IUseFavoriteUpdateProps) => {
       )
     )
 
-    let localFavorites = store.get('favorite_movies')
+    let localFavorites = store.get(LOCAL_STORAGE_KEY)
     localFavorites = localFavorites.filter(
       (favoriteItem: IMovieItem) =>
         favoriteItem.title !== selectedMovie.title && favoriteItem.imdbID !== selectedMovie.imdbID
     )
 
-    store.remove('favorite_movies')
-    store.set('favorite_movies', localFavorites)
+    store.remove(LOCAL_STORAGE_KEY)
+    store.set(LOCAL_STORAGE_KEY, localFavorites)
     changeMovieLike(selectedMovie)
   }
 
@@ -53,12 +54,12 @@ const useFavoriteUpdate = ({ selectedMovie }: IUseFavoriteUpdateProps) => {
     const likeItem = { ...selectedMovie, isLiked: !selectedMovie.isLiked }
     setFavoriteMovies((prev) => [...prev, { ...likeItem, isLiked: true }])
 
-    const localFavorites = store.get('favorite_movies')
+    const localFavorites = store.get(LOCAL_STORAGE_KEY)
     if (localFavorites) {
       localFavorites.push({ ...selectedMovie, isLiked: true })
-      store.set('favorite_movies', localFavorites)
+      store.set(LOCAL_STORAGE_KEY, localFavorites)
     } else {
-      store.set('favorite_movies', [likeItem])
+      store.set(LOCAL_STORAGE_KEY, [likeItem])
     }
     changeMovieLike(selectedMovie)
   }

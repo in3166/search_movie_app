@@ -2,6 +2,7 @@ import { Dispatch, DragEvent, SetStateAction } from 'react'
 import { SetterOrUpdater } from 'recoil'
 import { IMovieItem } from 'types/movie'
 import store from 'store'
+import { LOCAL_STORAGE_KEY } from 'utils/constants'
 
 interface useDragListProps {
   setDragVisible: Dispatch<SetStateAction<boolean>>
@@ -44,8 +45,8 @@ const useDragList = ({
       const list = [...favoriteMovies]
 
       list[grabPosition] = list.splice(targetPosition, 1, list[grabPosition])[0]
-      store.remove('favorite_movies')
-      store.set('favorite_movies', list)
+      store.remove(LOCAL_STORAGE_KEY)
+      store.set(LOCAL_STORAGE_KEY, list)
       setFavoriteMovies(list)
     }
     setDragVisible(false)

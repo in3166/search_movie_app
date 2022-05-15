@@ -75,7 +75,6 @@ const MainPage = () => {
     }
   }
 
-  // TODO: suspense 제대로 쓰기
   return (
     <>
       <SearchBar hadleMainScrollTop={hadleMainScrollTop} />
@@ -90,7 +89,7 @@ const MainPage = () => {
             <p>검색 결과가 없습니다.</p>
           </div>
         )}
-        {/* {isFetching && <Loading />} */}
+        {isFetching && <Loading />}
 
         {movies.length > 0 && (
           <ul className={cx({ [styles.movieLists]: movies.length > 0 })} ref={mainRef}>

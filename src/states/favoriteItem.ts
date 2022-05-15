@@ -1,11 +1,9 @@
 import store from 'store'
 import { IMovieItem } from 'types/movie'
-// src/recoil/Movie.ts
 import { atom } from 'hooks/state/index'
+import { LOCAL_STORAGE_KEY } from 'utils/constants'
 
-// TODO: 아직 사용x isChecked 추가?
-
-const storedFavoriteMovies = store.get('favorite_movies')
+const storedFavoriteMovies = store.get(LOCAL_STORAGE_KEY)
 
 export const favoritesState = atom<IMovieItem[]>({
   key: 'favoriteMovies',

@@ -1,6 +1,5 @@
 import axios from 'axios'
-
-const MOVIE_BASE_URL = 'http://www.omdbapi.com'
+import { MOVIE_API_BASE_URL } from 'utils/constants'
 
 interface Params {
   searchText: string
@@ -8,12 +7,10 @@ interface Params {
 }
 
 const axiosInstance = axios.create({
-  baseURL: MOVIE_BASE_URL,
+  baseURL: MOVIE_API_BASE_URL,
   timeout: 5000,
 })
-console.log('REACT_APP_MOVIE_API_KEY2: ', process.env.REACT_APP_MOVIE_API_KEY)
-console.log('MOVIE_API_KEY2: ', process.env.MOVIE_API_KEY)
-console.log('PUBLIC_URL2: ', process.env.PUBLIC_URL)
+
 axiosInstance.interceptors.request.use((config) => {
   config.params = {
     apikey: process.env.REACT_APP_MOVIE_API_KEY,

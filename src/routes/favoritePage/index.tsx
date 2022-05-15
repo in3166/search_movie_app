@@ -25,8 +25,6 @@ const FavoritePage = () => {
     setModalVisible(false)
   }
 
-  // TODO: Favorite search
-  // TODO: or main은 위에 두고 똑같은 ref 갖고 오기?
   return (
     <>
       <SearchBar />
