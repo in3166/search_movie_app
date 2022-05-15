@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { MOVIE_API_BASE_URL } from 'utils/constants'
 
-interface Params {
+interface IParams {
   searchText: string
   pageNumber: number
 }
@@ -37,7 +37,7 @@ axiosInstance.interceptors.response.use(
         code: res?.status,
         message: res?.data?.Error,
       }
-      return Promise.reject(res)
+      return Promise.resolve(res)
     }
 
     res.data.movieList = res.data.Search.map((value: ISearchResponse) => {
@@ -65,14 +65,14 @@ axiosInstance.interceptors.response.use(
   }
 )
 
-const getMoviesList = (params: Params) =>
+const getMoviesList = (params: IParams) =>
   axiosInstance('/', {
     params: {
       ...params,
     },
   })
 
-const getMoreMoviesList = (params: Params) =>
+const getMoreMoviesList = (params: IParams) =>
   axiosInstance.get(`/`, {
     params: {
       ...params,

@@ -1,4 +1,4 @@
-@use '/src/styles/constants/colors';
+@use 'styles/constants/colors';
 
 .wrapper {
   position: absolute;
@@ -22,15 +22,5 @@
   & button {
     height: 100%;
     cursor: pointer;
-  }
-}
-
-.darkMode {
-  position: absolute;
-  right: 15px;
-
-  & > button {
-    width: 30px;
-    color: rgb(245, 233, 69);
   }
 }

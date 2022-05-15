@@ -5,7 +5,7 @@ import store from 'store'
 import { IMovieItem } from 'types/movie'
 import { LOCAL_STORAGE_KEY } from 'utils/constants'
 
-interface useDragListProps {
+interface IUseDragListProps {
   setDragVisible: Dispatch<SetStateAction<boolean>>
   setGrabbing: Dispatch<SetStateAction<boolean>>
   favoriteMovies: IMovieItem[]
@@ -21,7 +21,7 @@ const useDragList = ({
   grab,
   favoriteMovies,
   setFavoriteMovies,
-}: useDragListProps) => {
+}: IUseDragListProps) => {
   const handleOnDragOver = (e: DragEvent<HTMLLIElement>) => {
     e.preventDefault()
     setDragVisible(true)

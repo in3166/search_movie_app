@@ -46,15 +46,14 @@ const MainPage = () => {
       const pageNumber = page + 1
       getMoreMoviesList({ searchText, pageNumber })
         .then((res) => {
+          // 가져온 Movie list가 이미 favorite에 있는지 확인
           const favorites = store.get(LOCAL_STORAGE_KEY)
           let tempList = res.data.movieList
-
           if (favorites && favorites.length > 0) {
             tempList = changeMovieListLike(tempList, favorites)
           }
 
           setMovies((prev) => [...prev, ...tempList])
-
           setCurrentPage((prev) => {
             return { ...prev, page: pageNumber }
           })
@@ -81,14 +80,16 @@ const MainPage = () => {
     <main className={styles.wrapper} ref={setRootTarget}>
       {searchError.isError && (
         <div className={styles.infoText}>
-          <p>Error: {searchError.error}</p>
+          <p>{searchError.error}</p>
         </div>
       )}
-      {!searchError.isError && movies?.length === 0 && (
+
+      {!searchError.isError && movies.length === 0 && (
         <div className={styles.infoText}>
           <p>검색 결과가 없습니다.</p>
         </div>
       )}
+
       {isFetching && <Loading />}
 
       {movies.length > 0 && (
@@ -109,6 +110,7 @@ const MainPage = () => {
           </Suspense>
         </ul>
       )}
+
       {modalVisible && selectedMovie && (
         <Modal onCancel={handleCloseModal} isRemove={selectedMovie?.isLiked} movie={selectedMovie} />
       )}

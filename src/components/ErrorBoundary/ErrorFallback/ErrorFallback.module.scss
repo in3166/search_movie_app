@@ -1,0 +1,49 @@
+@use 'styles/constants/colors';
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  & dl {
+    line-height: 2em;
+    text-align: center;
+  }
+
+  & dt {
+    margin: 1.2em 0;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: colors.$RED;
+  }
+
+  & dd {
+    color: colors.$GRAYA;
+  }
+
+  & .errorText {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: colors.$GRAYD;
+  }
+}
+
+.reloadButton {
+  padding: 10px 20px;
+  margin-top: 50px;
+  font-size: 1em;
+  font-weight: 600;
+  color: colors.$BLACK;
+  background-color: colors.$RELOAD_BUTTON_BACKGROUND;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: colors.$RELOAD_BUTTON_HOVER_BACKGROUND;
+  }
+
+  &:active {
+    background-color: colors.$RELOAD_BUTTON_ACTIVE_BACKGROUND;
+  }
+}

@@ -59,9 +59,13 @@
     font-weight: 600;
   }
 
+  & dt {
+    margin-bottom: 7px;
+  }
+
   & dd {
-    line-height: 1.7em;
-    color: colors.$GRAYA;
+    line-height: 1.5em;
+    color: colors.$MOVIE_TEXT;
   }
 }
 
@@ -69,10 +73,6 @@
   padding: 1em;
   border-top: 1px solid colors.$GRAY6;
   border-bottom: 1px solid colors.$GRAY6;
-
-  & dd {
-    margin-top: 10px;
-  }
 }
 
 .footer {

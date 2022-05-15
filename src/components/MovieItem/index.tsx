@@ -10,7 +10,7 @@ import useDragList from 'hooks/dragList'
 import useFavoriteUpdate from 'hooks/favoriteUpdate'
 import { favoritesState } from 'states/favoriteItem'
 
-interface MovieItemProps {
+interface IMovieItemProps {
   movie: IMovieItem
   onClick: (event: MouseEvent<HTMLButtonElement>) => void
   isDraggable: boolean
@@ -19,7 +19,7 @@ interface MovieItemProps {
   setGrab?: Dispatch<SetStateAction<HTMLLIElement | null>>
 }
 
-const MovieItem = ({ movie, onClick, isDraggable, index, grab, setGrab }: MovieItemProps) => {
+const MovieItem = ({ movie, onClick, isDraggable, index, grab, setGrab }: IMovieItemProps) => {
   const [favoriteMovies, setFavoriteMovies] = useRecoil(favoritesState)
 
   const [dragVisible, setDragVisible] = useState(false)

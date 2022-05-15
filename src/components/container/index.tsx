@@ -4,11 +4,11 @@ import { cx } from '../../styles'
 import styles from './Container.module.scss'
 import BackgroundUI from './BackgroundUI'
 
-interface ContainerProps {
+interface IContainerProps {
   children: ReactNode
 }
 
-const Container = ({ children }: ContainerProps) => {
+const Container = ({ children }: IContainerProps) => {
   return (
     <div className={cx(styles.container)}>
       {children}

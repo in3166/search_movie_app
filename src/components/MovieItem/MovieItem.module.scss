@@ -80,11 +80,11 @@
   }
 
   & > .type {
-    color: rgb(156, 156, 156);
+    color: colors.$MOVIE_TEXT;
   }
 
   & > .year {
-    color: rgb(199, 199, 199);
+    color: colors.$MOVIE_TEXT;
   }
 }
 
@@ -94,7 +94,7 @@
   right: 0;
   height: fit-content;
   padding: 7px;
-  color: rgb(255, 255, 0);
+  color: colors.$YELLOW;
   transition: transform ease-out 0.1s;
 
   &::after {
@@ -107,18 +107,18 @@
   }
 
   &:hover {
-    color: rgb(228, 228, 42);
+    color: colors.$MOVIEITEM_STAR_HOVER;
     transform: scale(1.2);
 
     & svg {
       border-radius: 50%;
-      transition: transform ease-out 0.1s, rgb(247, 247, 14) 0.2s;
+      transition: transform ease-out 0.1s, colors.$MOVIEITEM_STAR_HOVER_SVG 0.2s;
       animation: sonarEffect 1s ease-out 75ms infinite;
     }
   }
 
   &:focus {
-    color: rgb(253, 253, 48);
+    color: colors.$MOVIEITEM_STAR_FOCUS;
     opacity: 1;
   }
 }
