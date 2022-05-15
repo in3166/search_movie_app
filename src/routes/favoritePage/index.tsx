@@ -1,9 +1,11 @@
 import { lazy, Suspense, useState } from 'react'
-import { useRecoil } from 'hooks/state/'
+
 import styles from './FavoritePage.module.scss'
-import { favoritesState } from 'states/favoriteItem'
 import { IMovieItem } from 'types/movie'
+import { useRecoil } from 'hooks/state/'
+import { favoritesState } from 'states/favoriteItem'
 import { Loading, Modal, SearchBar } from 'components'
+
 import DragListButton from './DragListButton'
 
 const LazyMovieItem = lazy(() => import('components/MovieItem'))

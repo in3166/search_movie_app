@@ -1,36 +1,22 @@
+import { useCallback } from 'react'
+import store from 'store'
+
+import { IMovieItem } from 'types/movie'
 import { useRecoil } from 'hooks/state'
 import { favoritesState } from 'states/favoriteItem'
 import { moviesState } from 'states/movieItem'
-import { IMovieItem } from 'types/movie'
-import store from 'store'
-import { useCallback } from 'react'
 import { LOCAL_STORAGE_KEY } from 'utils/constants'
+import { changeMovieItemLike } from 'utils/changeIsLiked'
 
 interface IUseFavoriteUpdateProps {
   selectedMovie: IMovieItem | null
 }
 
 const useFavoriteUpdate = ({ selectedMovie }: IUseFavoriteUpdateProps) => {
-  const [, setMovies] = useRecoil(moviesState)
+  const [movies, setMovies] = useRecoil(moviesState)
   const [, setFavoriteMovies] = useRecoil(favoritesState)
-  //   const [selectedMovie, setselectedMovie] = useState(selectedMovie)
 
-  const changeMovieLike = useCallback(
-    (movieItem: IMovieItem) => {
-      setMovies((prev) =>
-        prev.map((value) => {
-          if (value.imdbID === movieItem.imdbID && value.title === movieItem.title) {
-            return { ...value, isLiked: !value.isLiked }
-          }
-          return value
-        })
-      )
-    },
-    [setMovies]
-  )
-
-  // movies search에 안해줘도 반영? 다시 렌더돼서 업데이트 되나?
-  const removeFromFavorite = () => {
+  const removeFromFavorite = useCallback(() => {
     if (!selectedMovie) return
     setFavoriteMovies((prev) =>
       prev.filter(
@@ -46,10 +32,12 @@ const useFavoriteUpdate = ({ selectedMovie }: IUseFavoriteUpdateProps) => {
 
     store.remove(LOCAL_STORAGE_KEY)
     store.set(LOCAL_STORAGE_KEY, localFavorites)
-    changeMovieLike(selectedMovie)
-  }
 
-  const addToFavorite = () => {
+    const newList = changeMovieItemLike(movies, selectedMovie)
+    setMovies(newList)
+  }, [setFavoriteMovies, selectedMovie, movies, setMovies])
+
+  const addToFavorite = useCallback(() => {
     if (!selectedMovie) return
     const likeItem = { ...selectedMovie, isLiked: !selectedMovie.isLiked }
     setFavoriteMovies((prev) => [...prev, { ...likeItem, isLiked: true }])
@@ -61,8 +49,10 @@ const useFavoriteUpdate = ({ selectedMovie }: IUseFavoriteUpdateProps) => {
     } else {
       store.set(LOCAL_STORAGE_KEY, [likeItem])
     }
-    changeMovieLike(selectedMovie)
-  }
+
+    const newList = changeMovieItemLike(movies, selectedMovie)
+    setMovies(newList)
+  }, [setFavoriteMovies, selectedMovie, movies, setMovies])
 
   return { removeFromFavorite, addToFavorite }
 }

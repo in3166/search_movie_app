@@ -1,6 +1,7 @@
-import styles from './DragListButton.module.scss'
-import { HiViewList } from 'react-icons/hi'
 import { Dispatch } from 'react'
+import { HiViewList } from 'react-icons/hi'
+
+import styles from './DragListButton.module.scss'
 
 interface IDragListButtonProps {
   setIsDraggable: Dispatch<React.SetStateAction<boolean>>

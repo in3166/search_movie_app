@@ -1,8 +1,9 @@
 import { MouseEvent, MouseEventHandler } from 'react'
-import styles from './Modal.module.scss'
 import ReactDOM from 'react-dom'
-import { IMovieItem } from 'types/movie'
+
 import defaultImg from 'assets/defaultImg.png'
+import styles from './Modal.module.scss'
+import { IMovieItem } from 'types/movie'
 import useFavoriteUpdate from 'hooks/favoriteUpdate'
 
 interface IBackDropProps {

@@ -1,14 +1,15 @@
 import { useRef, useState, ChangeEvent, FormEvent } from 'react'
-import { useClickOutsideListenerRef } from 'hooks/outsideClick'
-import { useRecoil } from 'hooks/state'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { FaSearch } from 'react-icons/fa'
-import { getMoviesList } from 'services/movie'
-import { currentPageState, errorMovieState, moviesState } from 'states/movieItem'
+
 import { cx } from 'styles'
 import styles from './SearchBar.module.scss'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useClickOutsideListenerRef } from 'hooks/outsideClick'
+import { useRecoil } from 'hooks/state'
+import { currentPageState, errorMovieState, moviesState } from 'states/movieItem'
 import { favoritesState } from 'states/favoriteItem'
-import { IMovieItem } from 'types/movie'
+import { getMoviesList } from 'services/movie'
+import { changeMovieListLike } from 'utils/changeIsLiked'
 
 interface ISearchBarProps {
   hadleMainScrollTop?: () => void
@@ -16,14 +17,16 @@ interface ISearchBarProps {
 
 const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
+
   const [searchText, setSearchText] = useState('')
-  // TODO: set만 쓰게 바꾸기
+  const [toggleSearchBar, setToggleSearchBar] = useState(false)
+
   const [, setCurrentPage, resetCurrentPage] = useRecoil(currentPageState)
   const [, setMovies, resetMovies] = useRecoil(moviesState)
   const [favorites, ,] = useRecoil(favoritesState)
   const [, setError, resetError] = useRecoil(errorMovieState)
-  const navigate = useNavigate()
-  const [toggleSearchBar, setToggleSearchBar] = useState(false)
+
   const focusRef = useRef<HTMLInputElement>(null)
 
   const handleChangeSearchText = (e: ChangeEvent<HTMLInputElement>) => {
@@ -35,27 +38,13 @@ const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
     focusRef.current?.focus()
   }
 
-  // Search bar 외부 선택 시 닫기
   const handleCloseSearchBar = () => {
     setToggleSearchBar(false)
     setSearchText('')
   }
 
-  const checkLiked = (movieList: IMovieItem[]) => {
-    let isLiked = false
-    const tempList = movieList.map((value: IMovieItem) => {
-      isLiked = favorites.some(
-        (favorite: IMovieItem) => favorite.title === value.title && favorite.imdbID === value.imdbID
-      )
-      return { ...value, isLiked }
-    })
-    return tempList
-  }
-
   const formRef = useClickOutsideListenerRef(handleCloseSearchBar)
 
-  // TODO: 이전과 동일한 검색어 일 때 RETURN?, TOP 버튼
-  // React. => 위에서 한번에 갖고 오기, FormEvent
   const handleSubmitSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (hadleMainScrollTop) hadleMainScrollTop()
@@ -72,7 +61,7 @@ const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
       .then((res) => {
         const totalResults = parseInt(res.data.totalResults, 10)
         resetError()
-        const tempList = checkLiked(res.data.movieList)
+        const tempList = changeMovieListLike(res.data.movieList, favorites)
         setMovies(tempList)
         setCurrentPage({ searchText: text, page: 1, totalResults })
       })
@@ -89,7 +78,7 @@ const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
   }
 
   return (
-    <div className={cx(styles.searchBox)} ref={formRef}>
+    <div className={styles.searchBox} ref={formRef}>
       <button
         type='button'
         onClick={handleOpenSearchBar}
@@ -100,7 +89,7 @@ const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
 
       <form
         onSubmit={handleSubmitSearch}
-        className={cx(styles.searchForm, { [styles.searchBarOpen]: toggleSearchBar })}
+        className={cx(styles.searchForm, { [styles.searchFormOpen]: toggleSearchBar })}
       >
         <input
           type='text'
@@ -111,7 +100,7 @@ const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
           onChange={handleChangeSearchText}
           className={cx(styles.searchInput)}
         />
-        <button type='submit' className={cx({ [styles.searchButton]: !toggleSearchBar })}>
+        <button type='submit' className={cx({ [styles.searchSubmitButton]: !toggleSearchBar })}>
           <FaSearch size='1.1em' />
         </button>
       </form>

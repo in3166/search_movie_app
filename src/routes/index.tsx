@@ -1,13 +1,13 @@
 import styles from './Routes.module.scss'
 import { Routes, Route } from 'react-router-dom'
 
-import MainPage from './mainPage'
-import FavoritePage from './favoritePage'
 import Container from 'components/container'
 import Header from 'components/Header'
 import GNB from './_shared/GNB'
 
-// TODO: 라우팅, outlet
+import MainPage from './mainPage'
+import FavoritePage from './favoritePage'
+
 const App = () => {
   return (
     <div className={styles.app}>

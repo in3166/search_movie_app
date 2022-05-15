@@ -1,7 +1,8 @@
 import { Dispatch, DragEvent, SetStateAction } from 'react'
 import { SetterOrUpdater } from 'recoil'
-import { IMovieItem } from 'types/movie'
 import store from 'store'
+
+import { IMovieItem } from 'types/movie'
 import { LOCAL_STORAGE_KEY } from 'utils/constants'
 
 interface useDragListProps {

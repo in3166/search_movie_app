@@ -1,11 +1,10 @@
 import { NavLink } from 'react-router-dom'
-
-import { cx } from 'styles'
-import styles from './GNB.module.scss'
 import { ImSearch } from 'react-icons/im'
 import { FaStar } from 'react-icons/fa'
 
-// TODO: Navlink로 변경, 현재 페이지 표시, 분리
+import { cx } from 'styles'
+import styles from './GNB.module.scss'
+
 const GNB = () => {
   return (
     <footer>

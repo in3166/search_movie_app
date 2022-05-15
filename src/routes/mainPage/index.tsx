@@ -1,13 +1,16 @@
 import { lazy, Suspense, useRef, useState } from 'react'
+import store from 'store'
+
+import { cx } from 'styles'
+import styles from './MainPage.module.scss'
 import { IMovieItem } from 'types/movie'
 import { useRecoil } from 'hooks/state/'
 import useIntersectionObserver from 'hooks/infiniteScroll'
 import { currentPageState, errorMovieState, moviesState } from 'states/movieItem'
 import { getMoreMoviesList } from 'services/movie'
-
 import { Modal, Loading, SearchBar } from 'components'
-import { cx } from 'styles'
-import styles from './MainPage.module.scss'
+import { LOCAL_STORAGE_KEY } from 'utils/constants'
+import { changeMovieListLike } from 'utils/changeIsLiked'
 
 const LazyMovieItem = lazy(() => import('components/MovieItem'))
 
@@ -32,7 +35,6 @@ const MainPage = () => {
     setModalVisible(false)
   }
 
-  // TODO: 분리
   const onIntersect: IntersectionObserverCallback = ([entries]) => {
     if (entries.isIntersecting) {
       setIsFetching(true)
@@ -46,7 +48,15 @@ const MainPage = () => {
       const pageNumber = page + 1
       getMoreMoviesList({ searchText, pageNumber })
         .then((res) => {
-          setMovies((prev) => [...prev, ...res.data.movieList])
+          const favorites = store.get(LOCAL_STORAGE_KEY)
+          let tempList = res.data.movieList
+
+          if (favorites && favorites.length > 0) {
+            tempList = changeMovieListLike(tempList, favorites)
+          }
+
+          setMovies((prev) => [...prev, ...tempList])
+
           setCurrentPage((prev) => {
             return { ...prev, page: pageNumber }
           })

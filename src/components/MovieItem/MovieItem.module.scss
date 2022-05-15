@@ -57,7 +57,6 @@
 .content {
   height: 100%;
   padding: 10px;
-  // overflow: hidden;
 
   & dl,
   dd,
@@ -67,7 +66,6 @@
   }
 
   & > .title {
-    // max-height: 2.6em;
     width: 165px;
     overflow: hidden;
     font-size: 14px;

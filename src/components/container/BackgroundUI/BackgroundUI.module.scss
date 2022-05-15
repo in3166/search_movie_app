@@ -16,7 +16,6 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  // width: 100px;
   height: 2px;
   background: linear-gradient(-45deg, rgb(41, 68, 128), rgba(0, 0, 255, 0%));
   filter: drop-shadow(0 0 6px rgba(105, 155, 255, 100%));
@@ -39,10 +38,7 @@
     position: absolute;
     top: calc(50% - 1px);
     right: 0;
-    // width: 30px;
     height: 2px;
-    // CodePen Error
-    // @extend .shooting_star::before;
     content: '';
     background: linear-gradient(-45deg, rgba(0, 0, 255, 0%), rgb(50, 81, 150), rgba(0, 0, 255, 0%));
     border-radius: 100%;
@@ -57,7 +53,6 @@
       top: calc(50% - #{math.random(400) - 200px});
       left: calc(50% - #{math.random(300) + 0px});
       animation-delay: $delay;
-      // opacity: random(50) / 100 + 0.5;
 
       &::before,
       &::after {

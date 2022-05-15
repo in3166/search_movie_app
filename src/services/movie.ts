@@ -27,7 +27,6 @@ interface ISearchResponse {
   Year: string
   imdbID: string
 }
-// object로 넘기기
 
 axiosInstance.interceptors.response.use(
   (res) => {

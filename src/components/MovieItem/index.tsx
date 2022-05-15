@@ -1,13 +1,14 @@
-import { useRecoil } from 'hooks/state'
 import { Dispatch, MouseEvent, useState, SetStateAction } from 'react'
 import { FaStar, FaRegStar } from 'react-icons/fa'
-import { favoritesState } from 'states/favoriteItem'
-import { IMovieItem } from 'types/movie'
+
+import defaultImg from 'assets/defaultImg.png'
 import { cx } from 'styles'
 import styles from './MovieItem.module.scss'
-import defaultImg from 'assets/defaultImg.png'
+import { IMovieItem } from 'types/movie'
+import { useRecoil } from 'hooks/state'
 import useDragList from 'hooks/dragList'
 import useFavoriteUpdate from 'hooks/favoriteUpdate'
+import { favoritesState } from 'states/favoriteItem'
 
 interface MovieItemProps {
   movie: IMovieItem
