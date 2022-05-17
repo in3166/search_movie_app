@@ -54,6 +54,7 @@
   - 즐겨찾기한 영화들의 순서를 드래그&드롭으로 조절
   - 오른쪽 위의 목록 편집 버튼을 클릭하면 순서 편집 가능 
   - 옮길 영화를 드래그하여 바꿀 위치의 영화 위로 옮기면 목록의 순서가 바뀐다.
+
 ```ts
 // MovieItem.ts
 // ...
@@ -98,7 +99,7 @@ const useDragList = ({ setDragVisible, setGrab, setGrabbing, grab, favoriteMovie
 ```      
  
 
-- `Suspense`를 사용해 로딩 화면 구현
+- `Suspense`를 사용, 로딩 화면 구현
 - `ErrorBoundary` 기능 추가
 
 <br><br>

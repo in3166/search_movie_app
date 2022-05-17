@@ -1,0 +1,67 @@
+@use 'styles/constants/colors';
+
+.searchBox {
+  position: absolute;
+  top: 19px;
+  left: 17px;
+  z-index: 1;
+}
+
+.searchInput {
+  width: 0%;
+}
+
+.searchForm {
+  width: 0;
+  padding: 5px;
+  opacity: 0;
+  transition: all 0.1s linear;
+
+  & button {
+    color: colors.$SEARCH_FORM_BUTTON;
+  }
+}
+
+.searchFormOpen {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  background-color: colors.$SEARCH_FORM_OPEN_BUTTON_BACKGROUND;
+  border-radius: 15px;
+  opacity: 1;
+
+  & ~ .title {
+    opacity: 0;
+  }
+
+  .searchInput {
+    width: 100%;
+    padding: 0 5px;
+    margin-right: 5px;
+    border-radius: 15px;
+  }
+}
+
+.searchToggleButton {
+  position: absolute;
+  top: 0;
+  width: 38px;
+  height: 29px;
+  color: colors.$WHITE;
+  opacity: 1;
+  transition: all 0.2s linear;
+}
+
+.hideToggleButton {
+  position: absolute;
+  display: none;
+  opacity: 0;
+  transition: all 0.2s linear;
+}
+
+.searchSubmitButton {
+  display: none;
+}
