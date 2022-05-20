@@ -4,7 +4,7 @@ import { IMovieItem } from 'types/movie'
 import { useRecoil } from 'hooks/state/'
 import { errorMovieState, moviesState } from 'states/movieItem'
 
-import { Modal, Loading } from 'components'
+import { Modal, Loading, SearchBar } from 'components'
 import { cx } from 'styles'
 import styles from './MainPage.module.scss'
 import { useIntersectionObserver } from 'hooks'
@@ -16,7 +16,7 @@ const MainPage = () => {
   const [searchError] = useRecoil(errorMovieState)
 
   // const [rootTarget, setRootTarget] = useState<HTMLElement | null | undefined>(null)
-  const mainRef = useRef<HTMLElement>(null)
+  const listRef = useRef<HTMLUListElement>(null)
 
   const [selectedMovie, setSelectedMovie] = useState<IMovieItem | null>(null)
   const [modalVisible, setModalVisible] = useState(false)
@@ -34,49 +34,52 @@ const MainPage = () => {
   const ref = useRef<HTMLDivElement | null>(null)
   const setTarget = useIntersectionObserver(
     ref,
-    { root: mainRef.current, rootMargin: '10px', threshold: 0 },
+    { root: listRef.current, rootMargin: '10px', threshold: 0 },
     setIsLoading
   )
 
   return (
-    <main className={styles.wrapper} ref={mainRef}>
-      {searchError.isError && (
-        <div className={styles.infoText}>
-          <p>{searchError.error}</p>
-        </div>
-      )}
+    <>
+      <SearchBar listRef={listRef} />
+      <main className={styles.wrapper}>
+        {searchError.isError && (
+          <div className={styles.infoText}>
+            <p>{searchError.error}</p>
+          </div>
+        )}
 
-      {isLoading && <Loading />}
+        {isLoading && <Loading />}
 
-      {!searchError.isError && !isLoading && movies.length === 0 && (
-        <div className={styles.infoText}>
-          <p>검색 결과가 없습니다.</p>
-        </div>
-      )}
+        {!searchError.isError && !isLoading && movies.length === 0 && (
+          <div className={styles.infoText}>
+            <p>검색 결과가 없습니다.</p>
+          </div>
+        )}
 
-      {movies.length > 0 && (
-        <ul className={cx({ [styles.movieLists]: movies.length > 0 })}>
-          <Suspense fallback={<Loading />}>
-            {movies.map((value, index) => {
-              return (
-                <LazyMovieItem
-                  index={index}
-                  key={`${value.imdbID}-${index + 1}`}
-                  movie={value}
-                  isDraggable={false}
-                  onClick={() => handleOpenModal(value)}
-                />
-              )
-            })}
-            {!isLoading && <li ref={setTarget} className={styles.scrollTargetLi} />}
-          </Suspense>
-        </ul>
-      )}
+        {movies.length > 0 && (
+          <ul className={cx({ [styles.movieLists]: movies.length > 0 })} ref={listRef}>
+            <Suspense fallback={<Loading />}>
+              {movies.map((value, index) => {
+                return (
+                  <LazyMovieItem
+                    index={index}
+                    key={`${value.imdbID}-${index + 1}`}
+                    movie={value}
+                    isDraggable={false}
+                    onClick={() => handleOpenModal(value)}
+                  />
+                )
+              })}
+              {!isLoading && <li ref={setTarget} className={styles.scrollTargetLi} />}
+            </Suspense>
+          </ul>
+        )}
 
-      {modalVisible && selectedMovie && (
-        <Modal onCancel={handleCloseModal} isRemove={selectedMovie?.isLiked} movie={selectedMovie} />
-      )}
-    </main>
+        {modalVisible && selectedMovie && (
+          <Modal onCancel={handleCloseModal} isRemove={selectedMovie?.isLiked} movie={selectedMovie} />
+        )}
+      </main>
+    </>
   )
 }
 

@@ -4,7 +4,7 @@ import styles from './FavoritePage.module.scss'
 import { IMovieItem } from 'types/movie'
 import { useRecoil } from 'hooks/state/'
 import { favoritesState } from 'states/favoriteItem'
-import { Loading, Modal } from 'components'
+import { Loading, Modal, SearchBar } from 'components'
 
 import DragListButton from './DragListButton'
 
@@ -29,6 +29,7 @@ const FavoritePage = () => {
 
   return (
     <>
+      <SearchBar />
       <DragListButton setIsDraggable={setIsDraggable} isDraggable={isDraggable} />
       <main className={styles.wrapper}>
         <ul className={styles.movieLists}>

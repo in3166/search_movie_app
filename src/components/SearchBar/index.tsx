@@ -1,4 +1,4 @@
-import { useRef, useState, ChangeEvent, FormEvent, useCallback } from 'react'
+import { useRef, useState, ChangeEvent, FormEvent, useCallback, RefObject } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useErrorHandler } from 'react-error-boundary'
 import { FaSearch } from 'react-icons/fa'
@@ -12,13 +12,12 @@ import { cx } from 'styles'
 import styles from './SearchBar.module.scss'
 
 interface ISearchBarProps {
-  hadleMainScrollTop?: () => void
+  listRef?: RefObject<HTMLElement>
 }
 
-const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
+const SearchBar = ({ listRef }: ISearchBarProps) => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-
   const [searchText, setSearchText] = useState('')
   const [toggleSearchBar, setToggleSearchBar] = useState(false)
 
@@ -26,7 +25,6 @@ const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
   const [, setMovies, resetMovies] = useRecoil(moviesState)
   const [, setError, resetError] = useRecoil(errorMovieState)
 
-  // Search Input에 focus
   const focusRef = useRef<HTMLInputElement>(null)
   const handleError = useErrorHandler()
 
@@ -48,9 +46,8 @@ const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
 
   const handleSubmitSearch = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
-      if (hadleMainScrollTop) hadleMainScrollTop()
       e.preventDefault()
-      setMovies([])
+      listRef?.current?.scrollTo(0, 0)
       const target = e.currentTarget as typeof e.currentTarget & {
         searchInputText: { value: string }
       }
@@ -63,7 +60,6 @@ const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
 
       getMoviesList({ searchText: text, pageNumber: 1 })
         .then((res) => {
-          // 결과가 없거나 너무 많은 경우 체크
           if (res.data.Response === 'False') {
             setError(res.data.error)
             resetMovies()
@@ -80,7 +76,6 @@ const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
           setError(err.data.error)
           resetMovies()
           resetCurrentPage()
-          // error를 ErrorBoundary에 알림 (ex. api key가 다른 경우)
           handleError(err.data.error)
         })
         .finally(() => {
@@ -89,7 +84,18 @@ const SearchBar = ({ hadleMainScrollTop }: ISearchBarProps) => {
           if (pathname !== '/') navigate('/', { replace: true })
         })
     },
-    [handleError, navigate, pathname, resetCurrentPage, resetError, resetMovies, setCurrentPage, setError, setMovies]
+    [
+      handleError,
+      listRef,
+      navigate,
+      pathname,
+      resetCurrentPage,
+      resetError,
+      resetMovies,
+      setCurrentPage,
+      setError,
+      setMovies,
+    ]
   )
 
   return (
