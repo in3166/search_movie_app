@@ -13,7 +13,6 @@ import { errorMovieState } from 'states/movieItem'
 const App = () => {
   const location = useLocation()
   const [error, ,] = useRecoil(errorMovieState)
-
   return (
     <div className={styles.app}>
       <Container>

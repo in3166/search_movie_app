@@ -6,7 +6,7 @@ interface IErrorFallbackProps {
   myError: IMovieErrorResponse
 }
 
-const ErrorFallback = ({ myError }: IErrorFallbackProps) => {
+const ErrorFallback = ({ error, myError }: IErrorFallbackProps) => {
   const myErrorHandler = () => {
     window.location.reload()
   }
@@ -14,8 +14,16 @@ const ErrorFallback = ({ myError }: IErrorFallbackProps) => {
   return (
     <div role='alert' className={styles.wrapper}>
       <dl>
-        <dt className={styles.errorTitle}>[Error]: {myError.error}</dt>
+        <dt className={styles.errorTitle}>Error</dt>
+        <dd>{myError.error}</dd>
+        <dd>{error?.message}</dd>
+      </dl>
+      <dl>
+        <dt>Error Code</dt>
         <dd>{myError.code}</dd>
+      </dl>
+      <dl>
+        <dt>Error Message</dt>
         <dd className={styles.errorText}>{myError.message}</dd>
       </dl>
       <button type='button' onClick={myErrorHandler} className={styles.reloadButton}>

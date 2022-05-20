@@ -9,3 +9,6 @@ export function useMounted(): boolean {
   useMount(() => setMounted(true))
   return mounted
 }
+
+export { useIsFavorite } from './useIsFavorite'
+export { useIntersectionObserver } from './useIntersectionObserver'

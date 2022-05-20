@@ -7,7 +7,7 @@ interface IUseIntersectionObserverProps {
   onIntersect: IntersectionObserverCallback
 }
 
-const useIntersectionObserver = ({
+const useIntersectionObserver2 = ({
   root,
   rootMargin = '0px',
   threshold = 0,
@@ -27,4 +27,4 @@ const useIntersectionObserver = ({
   return { setTarget }
 }
 
-export default useIntersectionObserver
+export default useIntersectionObserver2
