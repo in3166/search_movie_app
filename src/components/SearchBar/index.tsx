@@ -1,30 +1,30 @@
-import { useRef, useState, ChangeEvent, FormEvent } from 'react'
+import { useRef, useState, ChangeEvent, FormEvent, useCallback, RefObject } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useErrorHandler } from 'react-error-boundary'
 import { FaSearch } from 'react-icons/fa'
 
-import { cx } from 'styles'
-import styles from './SearchBar.module.scss'
 import { useClickOutsideListenerRef } from 'hooks/outsideClick'
 import { useRecoil } from 'hooks/state'
 import { currentPageState, errorMovieState, moviesState } from 'states/movieItem'
-import { favoritesState } from 'states/favoriteItem'
 import { getMoviesList } from 'services/movie'
-import { changeMovieListLike } from 'utils/changeIsLiked'
-import { useErrorHandler } from 'react-error-boundary'
 
-const SearchBar = () => {
+import { cx } from 'styles'
+import styles from './SearchBar.module.scss'
+
+interface ISearchBarProps {
+  listRef?: RefObject<HTMLElement>
+}
+
+const SearchBar = ({ listRef }: ISearchBarProps) => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-
   const [searchText, setSearchText] = useState('')
   const [toggleSearchBar, setToggleSearchBar] = useState(false)
 
   const [, setCurrentPage, resetCurrentPage] = useRecoil(currentPageState)
   const [, setMovies, resetMovies] = useRecoil(moviesState)
-  const [favorites, ,] = useRecoil(favoritesState)
   const [, setError, resetError] = useRecoil(errorMovieState)
 
-  // Search Input에 focus
   const focusRef = useRef<HTMLInputElement>(null)
   const handleError = useErrorHandler()
 
@@ -44,48 +44,59 @@ const SearchBar = () => {
 
   const formRef = useClickOutsideListenerRef(handleCloseSearchBar)
 
-  const handleSubmitSearch = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setMovies([])
-    const target = e.currentTarget as typeof e.currentTarget & {
-      searchInputText: { value: string }
-    }
+  const handleSubmitSearch = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      listRef?.current?.scrollTo(0, 0)
+      const target = e.currentTarget as typeof e.currentTarget & {
+        searchInputText: { value: string }
+      }
 
-    const text = target.searchInputText.value
-    if (text.trim().length === 0) {
-      handleCloseSearchBar()
-      return
-    }
+      const text = target.searchInputText.value
+      if (text.trim().length === 0) {
+        handleCloseSearchBar()
+        return
+      }
 
-    getMoviesList({ searchText: text, pageNumber: 1 })
-      .then((res) => {
-        // 결과가 없거나 너무 많은 경우 체크
-        if (res.data.Response === 'False') {
-          setError(res.data.error)
+      getMoviesList({ searchText: text, pageNumber: 1 })
+        .then((res) => {
+          if (res.data.Response === 'False') {
+            setError(res.data.error)
+            resetMovies()
+            resetCurrentPage()
+            return
+          }
+
+          const totalResults = parseInt(res.data.totalResults, 10)
+          resetError()
+          setMovies(res.data.movieList)
+          setCurrentPage({ searchText: text, page: 1, totalResults })
+        })
+        .catch((err) => {
+          setError(err.data.error)
           resetMovies()
           resetCurrentPage()
-          return
-        }
-
-        const totalResults = parseInt(res.data.totalResults, 10)
-        resetError()
-        const tempList = changeMovieListLike(res.data.movieList, favorites)
-        setMovies(tempList)
-        setCurrentPage({ searchText: text, page: 1, totalResults })
-      })
-      .catch((err) => {
-        setError(err.data.error)
-        resetMovies()
-        resetCurrentPage()
-        // error를 ErrorBoundary에 알림 (ex. api key가 다른 경우)
-        handleError(err.data.error)
-      })
-      .finally(() => {
-        setSearchText('')
-        handleCloseSearchBar()
-        if (pathname !== '/') navigate('/', { replace: true })
-      })
-  }
+          handleError(err.data.error)
+        })
+        .finally(() => {
+          setSearchText('')
+          handleCloseSearchBar()
+          if (pathname !== '/') navigate('/', { replace: true })
+        })
+    },
+    [
+      handleError,
+      listRef,
+      navigate,
+      pathname,
+      resetCurrentPage,
+      resetError,
+      resetMovies,
+      setCurrentPage,
+      setError,
+      setMovies,
+    ]
+  )
 
   return (
     <div className={styles.searchBox} ref={formRef}>

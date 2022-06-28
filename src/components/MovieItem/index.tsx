@@ -9,6 +9,7 @@ import { useRecoil } from 'hooks/state'
 import useDragList from 'hooks/dragList'
 import useFavoriteUpdate from 'hooks/favoriteUpdate'
 import { favoritesState } from 'states/favoriteItem'
+import { useIsFavorite } from 'hooks'
 
 interface IMovieItemProps {
   movie: IMovieItem
@@ -21,16 +22,16 @@ interface IMovieItemProps {
 
 const MovieItem = ({ movie, onClick, isDraggable, index, grab, setGrab }: IMovieItemProps) => {
   const [favoriteMovies, setFavoriteMovies] = useRecoil(favoritesState)
-
   const [dragVisible, setDragVisible] = useState(false)
   const [grabbing, setGrabbing] = useState(false)
+  const isFavorite = useIsFavorite(movie)
 
   const { removeFromFavorite, addToFavorite } = useFavoriteUpdate({ selectedMovie: movie })
 
   const handleClickStar = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (isDraggable) return
-    if (movie.isLiked) {
+    if (isFavorite) {
       removeFromFavorite()
     } else {
       addToFavorite()
@@ -73,14 +74,14 @@ const MovieItem = ({ movie, onClick, isDraggable, index, grab, setGrab }: IMovie
         <div className={styles.poster}>
           <img src={movie.poster} alt='movie poster' onError={handleImgOnError} />
         </div>
-        <dl className={styles.content}>
-          <dt className={styles.title}>{movie.title}</dt>
-          <dd className={styles.type}>{movie.type}</dd>
-          <dd className={styles.year}>{movie.year}</dd>
-        </dl>
+        <ul className={styles.content}>
+          <li className={styles.title}>{movie.title}</li>
+          <li className={styles.type}>{movie.type}</li>
+          <li className={styles.year}>{movie.year}</li>
+        </ul>
       </button>
       <button type='button' className={styles.likes} onClick={handleClickStar}>
-        {movie.isLiked ? <FaStar /> : <FaRegStar color='black' />}
+        {isFavorite ? <FaStar /> : <FaRegStar color='black' />}
       </button>
     </li>
   )

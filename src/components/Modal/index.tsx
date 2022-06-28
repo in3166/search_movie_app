@@ -43,6 +43,23 @@ const ModalOverlay = ({ isRemove, movie, onCancel }: IModalProps) => {
     onCancel(e)
   }
 
+  const makeClickButton = () => {
+    let onClick = handleAddFavorite
+    let content = '추가'
+    if (isRemove) {
+      onClick = handleRemoveFavorite
+      content = '제거'
+    }
+
+    return (
+      <button type='button' onClick={onClick}>
+        {content}
+      </button>
+    )
+  }
+
+  const clickButton = makeClickButton()
+
   return (
     <div className={styles.modal}>
       <div className={styles.modalActive}>
@@ -70,15 +87,7 @@ const ModalOverlay = ({ isRemove, movie, onCancel }: IModalProps) => {
           </div>
         </div>
         <footer className={styles.footer}>
-          {isRemove ? (
-            <button type='button' onClick={handleRemoveFavorite}>
-              제거
-            </button>
-          ) : (
-            <button type='button' onClick={handleAddFavorite}>
-              추가
-            </button>
-          )}
+          {clickButton}
           <button type='button' onClick={onCancel}>
             취소
           </button>

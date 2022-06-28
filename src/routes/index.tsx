@@ -4,8 +4,8 @@ import Container from 'components/container'
 import Header from 'components/Header'
 import GNB from './_shared/GNB'
 
-import MainPage from './mainPage'
-import FavoritePage from './favoritePage'
+import MainPage from './MainPage'
+import FavoritePage from './FavoritePage'
 import ErrorBoundary from 'components/ErrorBoundary'
 import { useRecoil } from 'hooks/state'
 import { errorMovieState } from 'states/movieItem'
@@ -13,7 +13,6 @@ import { errorMovieState } from 'states/movieItem'
 const App = () => {
   const location = useLocation()
   const [error, ,] = useRecoil(errorMovieState)
-
   return (
     <div className={styles.app}>
       <Container>

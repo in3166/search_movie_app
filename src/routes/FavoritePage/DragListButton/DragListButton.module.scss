@@ -1,0 +1,10 @@
+@use 'styles/constants/colors';
+
+.editButton {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 33px;
+  font-size: 17px;
+  color: colors.$WHITE;
+}
