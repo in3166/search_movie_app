@@ -12,7 +12,7 @@ const LazyMovieItem = lazy(() => import('components/MovieItem'))
 
 const FavoritePage = () => {
   const [modalVisible, setModalVisible] = useState(false)
-  const [favoriteMovies, ,] = useRecoil(favoritesState)
+  const [favoriteMovies, setFavoriteMovies] = useRecoil(favoritesState)
   const [selectedFavoriteMovie, setSelectedFavoriteMovie] = useState<IMovieItem | null>(null)
   const [isDraggable, setIsDraggable] = useState(false)
   const [grab, setGrab] = useState<HTMLLIElement | null>(null)
@@ -44,6 +44,8 @@ const FavoritePage = () => {
                   key={`${value.imdbID}-list-${index + 1}`}
                   movie={value}
                   onClick={() => handleOpenModal(value)}
+                  favoriteMovies={favoriteMovies}
+                  setFavoriteMovies={setFavoriteMovies}
                 />
               ))}
           </Suspense>

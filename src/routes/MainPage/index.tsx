@@ -8,21 +8,24 @@ import { Modal, Loading, SearchBar } from 'components'
 import { cx } from 'styles'
 import styles from './MainPage.module.scss'
 import { useIntersectionObserver } from 'hooks'
+import { favoritesState } from 'states/favoriteItem'
 
 const LazyMovieItem = lazy(() => import('components/MovieItem'))
 
 const MainPage = () => {
   const [movies, ,] = useRecoil(moviesState)
   const [searchError] = useRecoil(errorMovieState)
+  const [favoriteMovies, setFavoriteMovies] = useRecoil(favoritesState)
 
-  // const [rootTarget, setRootTarget] = useState<HTMLElement | null | undefined>(null)
   const listRef = useRef<HTMLUListElement>(null)
 
   const [selectedMovie, setSelectedMovie] = useState<IMovieItem | null>(null)
   const [modalVisible, setModalVisible] = useState(false)
+  const [isLikeModal, setIsLikeModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleOpenModal = (value: IMovieItem) => {
+  const handleOpenModal = (value: IMovieItem, isLike: boolean) => {
+    setIsLikeModal(isLike)
     setSelectedMovie(value)
     setModalVisible(true)
   }
@@ -66,7 +69,9 @@ const MainPage = () => {
                     key={`${value.imdbID}-${index + 1}`}
                     movie={value}
                     isDraggable={false}
-                    onClick={() => handleOpenModal(value)}
+                    onClick={handleOpenModal}
+                    favoriteMovies={favoriteMovies}
+                    setFavoriteMovies={setFavoriteMovies}
                   />
                 )
               })}
@@ -76,7 +81,7 @@ const MainPage = () => {
         )}
 
         {modalVisible && selectedMovie && (
-          <Modal onCancel={handleCloseModal} isRemove={selectedMovie?.isLiked} movie={selectedMovie} />
+          <Modal onCancel={handleCloseModal} isRemove={isLikeModal} movie={selectedMovie} />
         )}
       </main>
     </>

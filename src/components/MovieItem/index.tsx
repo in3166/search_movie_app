@@ -1,30 +1,39 @@
 import { Dispatch, MouseEvent, useState, SetStateAction } from 'react'
 import { FaStar, FaRegStar } from 'react-icons/fa'
 
-import defaultImg from 'assets/defaultImg.png'
-import { cx } from 'styles'
-import styles from './MovieItem.module.scss'
 import { IMovieItem } from 'types/movie'
-import { useRecoil } from 'hooks/state'
+import { SetterOrUpdater } from 'hooks/state'
 import useDragList from 'hooks/dragList'
 import useFavoriteUpdate from 'hooks/favoriteUpdate'
-import { favoritesState } from 'states/favoriteItem'
-import { useIsFavorite } from 'hooks'
+import { getIsFavorite } from 'utils/getIsFavorite'
+import { cx } from 'styles'
+import styles from './MovieItem.module.scss'
+import defaultImg from 'assets/defaultImg.png'
 
 interface IMovieItemProps {
   movie: IMovieItem
-  onClick: (event: MouseEvent<HTMLButtonElement>) => void
+  onClick: (value: IMovieItem, isLike: boolean) => void
   isDraggable: boolean
   index: number
   grab?: HTMLLIElement | null
   setGrab?: Dispatch<SetStateAction<HTMLLIElement | null>>
+  favoriteMovies: IMovieItem[]
+  setFavoriteMovies: SetterOrUpdater<IMovieItem[]>
 }
 
-const MovieItem = ({ movie, onClick, isDraggable, index, grab, setGrab }: IMovieItemProps) => {
-  const [favoriteMovies, setFavoriteMovies] = useRecoil(favoritesState)
+const MovieItem = ({
+  movie,
+  onClick,
+  isDraggable,
+  index,
+  grab,
+  setGrab,
+  favoriteMovies,
+  setFavoriteMovies,
+}: IMovieItemProps) => {
   const [dragVisible, setDragVisible] = useState(false)
   const [grabbing, setGrabbing] = useState(false)
-  const isFavorite = useIsFavorite(movie)
+  const isFavorite = getIsFavorite(favoriteMovies, movie)
 
   const { removeFromFavorite, addToFavorite } = useFavoriteUpdate({ selectedMovie: movie })
 
@@ -70,7 +79,7 @@ const MovieItem = ({ movie, onClick, isDraggable, index, grab, setGrab }: IMovie
       onDragEnter={handleOnDragEnter}
       onDragLeave={handleOnDragLeave}
     >
-      <button type='button' onClick={onClick} className={styles.contentButton}>
+      <button type='button' onClick={() => onClick(movie, isFavorite)} className={styles.contentButton}>
         <div className={styles.poster}>
           <img src={movie.poster} alt='movie poster' onError={handleImgOnError} />
         </div>

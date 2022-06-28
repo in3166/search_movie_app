@@ -33,10 +33,11 @@ const useFavoriteUpdate = ({ selectedMovie }: IUseFavoriteUpdateProps) => {
     if (localFavorites) {
       localFavorites.push({ ...selectedMovie, isLiked: true })
       store.set(LOCAL_STORAGE_KEY, localFavorites)
+      setFavoriteMovies(localFavorites)
     } else {
       store.set(LOCAL_STORAGE_KEY, [selectedMovie])
+      setFavoriteMovies([selectedMovie])
     }
-    setFavoriteMovies(localFavorites)
   }, [setFavoriteMovies, selectedMovie])
 
   return { removeFromFavorite, addToFavorite }

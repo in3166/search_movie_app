@@ -10,5 +10,4 @@ export function useMounted(): boolean {
   return mounted
 }
 
-export { useIsFavorite } from './useIsFavorite'
 export { useIntersectionObserver } from './useIntersectionObserver'
