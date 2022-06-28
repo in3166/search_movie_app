@@ -2,12 +2,10 @@ import { useRef, useState, ChangeEvent, FormEvent, useCallback, RefObject } from
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useErrorHandler } from 'react-error-boundary'
 import { FaSearch } from 'react-icons/fa'
-
 import { useClickOutsideListenerRef } from 'hooks/outsideClick'
 import { useRecoil } from 'hooks/state'
 import { currentPageState, errorMovieState, moviesState } from 'states/movieItem'
 import { getMoviesList } from 'services/movie'
-
 import { cx } from 'styles'
 import styles from './SearchBar.module.scss'
 
