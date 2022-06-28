@@ -6,7 +6,7 @@ import { useRecoil } from './state'
 interface Args extends IntersectionObserverInit {
   freezeOnceVisible?: boolean
 }
-// TODO: onIntersect를 분리?
+
 export function useIntersectionObserver(
   elementRef: RefObject<Element>,
   { threshold = 0, root = null, rootMargin = '0%' }: Args,

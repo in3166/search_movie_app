@@ -10,7 +10,5 @@ export function useIsFavorite(movieItem: IMovieItem) {
   )
   if (isFavorite !== -1) return true
 
-  console.log('favoriteMovies.includes(); ', movieItem.title, isFavorite)
-
   return false
 }
