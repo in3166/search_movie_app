@@ -107,9 +107,12 @@ const useDragList = ({ setDragVisible, setGrab, setGrabbing, grab, favoriteMovie
 
 <br><br>
 
-## 사용한 라이브러리 및 API
-- react-icons
+## 사용 Stacks
+- React
+- Typescript
 - react-router-dom
+- Sass
+- Sass-loader
 - recoil
 - store
 
@@ -139,6 +142,11 @@ const useDragList = ({ setDragVisible, setGrab, setGrabbing, grab, favoriteMovie
 - react-router-dom
 - IntersectionObserver
 - react-error-boundary
+<br>
 
+- Eslint
+- Prettier
+- Eslint-config-airbnb
+- Eslint-config-prettier
 
 <br><br>
