@@ -32,7 +32,6 @@ const FavoritePage = () => {
   return (
     <>
       <Header listRef={listRef} title='Favorites' />
-      <SearchBar />
       <DragListButton setIsDraggable={setIsDraggable} isDraggable={isDraggable} />
       <main className={styles.wrapper}>
         <ul className={styles.movieLists} ref={listRef}>

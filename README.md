@@ -53,9 +53,7 @@
 - 즐겨찾기 탭에서 목록 순서 조정 (편집)
   - 즐겨찾기한 영화들의 순서를 드래그&드롭으로 조절
   - 오른쪽 위의 목록 편집 버튼을 클릭하면 순서 편집 가능 
-
-  - 옮길 영화를 드래그하여 바꿀 위치의 영화 위로 옮기면 목록의 순서가 바뀐다.
-    - A Item을 B Item 위로 겹쳐야 위치가 서로 바뀌게 구현
+  - 옮길 영화를 드래그하여 타겟 영화 위로 옮기면 목록의 순서가 바뀐다.
 
 ```ts
 // MovieItem.ts
@@ -74,22 +72,24 @@ return (
   
 // 드래그 한 요소(`grab`)이 Drop 될 때 `current` 요소와 위치를 비교해 자리를 바꾼다.
 // hooks/useDragList.ts
+
 const useDragList = ({ setDragVisible, setGrab, setGrabbing, grab, favoriteMovies, setFavoriteMovies }: IUseDragListProps) => {
   // ...
-  const handleOnDragStart = (e: DragEvent<HTMLLIElement>) => {
-    if (setGrab) setGrab(e.currentTarget)
-    setGrabbing(true)
-  }
-  
   const handleOnDrop = (e: DragEvent<HTMLLIElement>) => {
     let grabPosition
     if (grab) {
       grabPosition = Number(grab.dataset.position)
       const targetPosition = Number(e.currentTarget.dataset.position)
-
       const list = [...favoriteMovies]
 
-      list[grabPosition] = list.splice(targetPosition, 1, list[grabPosition])[0]
+      if (grabPosition < targetPosition) {
+        list.splice(targetPosition + 1, 0, list[grabPosition])
+        list.splice(grabPosition, 1)
+      } else if (grabPosition > targetPosition) {
+        list.splice(targetPosition, 0, list[grabPosition])
+        list.splice(grabPosition + 1, 1)
+      }
+
       store.remove(LOCAL_STORAGE_KEY)
       store.set(LOCAL_STORAGE_KEY, list)
       setFavoriteMovies(list)
@@ -97,10 +97,8 @@ const useDragList = ({ setDragVisible, setGrab, setGrabbing, grab, favoriteMovie
     setDragVisible(false)
   }
   // ...
-  return { handleOnDragOver, handleOnDragStart, handleOnDragEnd, handleOnDrop, handleOnDragEnter, handleOnDragLeave } 
 ```      
  
-
 - `Suspense`를 사용, 로딩 화면 구현
 - `ErrorBoundary` 기능 추가
 

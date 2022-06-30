@@ -44,7 +44,6 @@ const MainPage = () => {
   return (
     <>
       <Header listRef={listRef} title='Movies' />
-      <SearchBar listRef={listRef} />
       <main className={styles.wrapper}>
         {searchError.isError && (
           <div className={styles.infoText}>

@@ -42,59 +42,45 @@ const SearchBar = ({ listRef }: ISearchBarProps) => {
 
   const formRef = useClickOutsideListenerRef(handleCloseSearchBar)
 
-  const handleSubmitSearch = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-      listRef?.current?.scrollTo(0, 0)
-      const target = e.currentTarget as typeof e.currentTarget & {
-        searchInputText: { value: string }
-      }
+  const handleSubmitSearch = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    listRef?.current?.scrollTo(0, 0)
+    const target = e.currentTarget as typeof e.currentTarget & {
+      searchInputText: { value: string }
+    }
 
-      const text = target.searchInputText.value
-      if (text.trim().length === 0) {
-        handleCloseSearchBar()
-        return
-      }
+    const text = target.searchInputText.value
+    if (searchText.trim().length === 0) {
+      handleCloseSearchBar()
+      return
+    }
 
-      getMoviesList({ searchText: text, pageNumber: 1 })
-        .then((res) => {
-          if (res.data.Response === 'False') {
-            setError(res.data.error)
-            resetMovies()
-            resetCurrentPage()
-            return
-          }
-
-          const totalResults = parseInt(res.data.totalResults, 10)
-          resetError()
-          setMovies(res.data.movieList)
-          setCurrentPage({ searchText: text, page: 1, totalResults })
-        })
-        .catch((err) => {
-          setError(err.data.error)
+    getMoviesList({ searchText, pageNumber: 1 })
+      .then((res) => {
+        if (res.data.Response === 'False') {
+          setError(res.data.error)
           resetMovies()
           resetCurrentPage()
-          handleError(err.data.error)
-        })
-        .finally(() => {
-          setSearchText('')
-          handleCloseSearchBar()
-          if (pathname !== '/') navigate('/', { replace: true })
-        })
-    },
-    [
-      handleError,
-      listRef,
-      navigate,
-      pathname,
-      resetCurrentPage,
-      resetError,
-      resetMovies,
-      setCurrentPage,
-      setError,
-      setMovies,
-    ]
-  )
+          return
+        }
+
+        const totalResults = parseInt(res.data.totalResults, 10)
+        resetError()
+        setMovies(res.data.movieList)
+        setCurrentPage({ searchText: text, page: 1, totalResults })
+      })
+      .catch((err) => {
+        setError(err.data.error)
+        resetMovies()
+        resetCurrentPage()
+        handleError(err.data.error)
+      })
+      .finally(() => {
+        setSearchText('')
+        handleCloseSearchBar()
+        if (pathname !== '/') navigate('/', { replace: true })
+      })
+  }
 
   return (
     <div className={styles.searchBox} ref={formRef}>
