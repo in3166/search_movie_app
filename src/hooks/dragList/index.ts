@@ -42,10 +42,16 @@ const useDragList = ({
     if (grab) {
       grabPosition = Number(grab.dataset.position)
       const targetPosition = Number(e.currentTarget.dataset.position)
-
       const list = [...favoriteMovies]
 
-      list[grabPosition] = list.splice(targetPosition, 1, list[grabPosition])[0]
+      if (grabPosition < targetPosition) {
+        list.splice(targetPosition + 1, 0, list[grabPosition])
+        list.splice(grabPosition, 1)
+      } else if (grabPosition > targetPosition) {
+        list.splice(targetPosition, 0, list[grabPosition])
+        list.splice(grabPosition + 1, 1)
+      }
+
       store.remove(LOCAL_STORAGE_KEY)
       store.set(LOCAL_STORAGE_KEY, list)
       setFavoriteMovies(list)

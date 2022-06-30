@@ -4,7 +4,7 @@ import { cx } from 'styles'
 import styles from './Header.module.scss'
 
 interface IHeaderProps {
-  listRef?: RefObject<HTMLElement>
+  listRef: RefObject<HTMLElement>
   title: string
 }
 
