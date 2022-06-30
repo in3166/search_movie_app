@@ -15,4 +15,7 @@
 .movieLists {
   width: 100%;
   height: 100%;
+  overflow: scroll;
+  transition: all 0.2s linear;
+  scroll-behavior: smooth;
 }

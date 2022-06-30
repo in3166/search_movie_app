@@ -1,16 +1,23 @@
-import { useLocation } from 'react-router-dom'
+import { RefObject } from 'react'
 
 import { cx } from 'styles'
 import styles from './Header.module.scss'
 
-const Header = () => {
-  const { pathname } = useLocation()
+interface IHeaderProps {
+  listRef?: RefObject<HTMLElement>
+  title: string
+}
+
+const Header = ({ listRef, title }: IHeaderProps) => {
+  const handleClickTitle = () => {
+    listRef?.current?.scrollTo(0, 0)
+  }
 
   return (
     <header className={cx(styles.wrapper)}>
-      <h3 className={cx(styles.title)}>
-        <strong>{pathname === '/' ? 'Movies' : 'Favorites'}</strong>
-      </h3>
+      <button type='button' onClick={handleClickTitle} className={cx(styles.title)}>
+        <strong>{title}</strong>
+      </button>
     </header>
   )
 }

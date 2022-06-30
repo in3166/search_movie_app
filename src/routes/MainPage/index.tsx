@@ -4,7 +4,7 @@ import { IMovieItem } from 'types/movie'
 import { useRecoil } from 'hooks/state/'
 import { errorMovieState, moviesState } from 'states/movieItem'
 
-import { Modal, Loading, SearchBar } from 'components'
+import { Modal, Loading, SearchBar, Header } from 'components'
 import { cx } from 'styles'
 import styles from './MainPage.module.scss'
 import { useIntersectionObserver } from 'hooks'
@@ -43,6 +43,7 @@ const MainPage = () => {
 
   return (
     <>
+      <Header listRef={listRef} title='Movies' />
       <SearchBar listRef={listRef} />
       <main className={styles.wrapper}>
         {searchError.isError && (

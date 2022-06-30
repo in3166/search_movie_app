@@ -2,7 +2,6 @@ import store from 'store'
 import styles from './Routes.module.scss'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Container from 'components/container'
-import Header from 'components/Header'
 import GNB from './_shared/GNB'
 
 import MainPage from './MainPage'
@@ -28,7 +27,6 @@ const App = () => {
     <div className={styles.app}>
       <Container>
         <ErrorBoundary myError={error} key={location.pathname}>
-          <Header />
           <Routes>
             <Route path='/' element={<MainPage />} />
             <Route path='favorites' element={<FavoritePage />} />

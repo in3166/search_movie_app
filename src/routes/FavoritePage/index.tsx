@@ -1,10 +1,10 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense, useRef, useState } from 'react'
 
 import styles from './FavoritePage.module.scss'
 import { IMovieItem } from 'types/movie'
 import { useRecoil } from 'hooks/state/'
 import { favoritesState } from 'states/favoriteItem'
-import { Loading, Modal, SearchBar } from 'components'
+import { Header, Loading, Modal, SearchBar } from 'components'
 
 import DragListButton from './DragListButton'
 
@@ -16,6 +16,8 @@ const FavoritePage = () => {
   const [selectedFavoriteMovie, setSelectedFavoriteMovie] = useState<IMovieItem | null>(null)
   const [isDraggable, setIsDraggable] = useState(false)
   const [grab, setGrab] = useState<HTMLLIElement | null>(null)
+
+  const listRef = useRef<HTMLUListElement>(null)
 
   const handleOpenModal = (value: IMovieItem) => {
     if (isDraggable) return
@@ -29,10 +31,11 @@ const FavoritePage = () => {
 
   return (
     <>
+      <Header listRef={listRef} title='Favorites' />
       <SearchBar />
       <DragListButton setIsDraggable={setIsDraggable} isDraggable={isDraggable} />
       <main className={styles.wrapper}>
-        <ul className={styles.movieLists}>
+        <ul className={styles.movieLists} ref={listRef}>
           <Suspense fallback={<Loading />}>
             {favoriteMovies?.length > 0 &&
               favoriteMovies.map((value, index) => (
