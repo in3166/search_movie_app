@@ -1,7 +1,7 @@
 ### 원티드 프리온보딩 프론트엔드
 # **Grip 컴퍼니 기업 과제 - 영화 검색 앱**
 - 영화 검색과 즐겨찾기 추가/제거 등을 할 수 있는 애플리케이션입니다.
-- **[데모 페이지](https://in3166.github.io/wanted_grip_assignment/)**
+- **[데모 페이지](https://geta-movies.netlify.app/)**
 
 <br>
 
