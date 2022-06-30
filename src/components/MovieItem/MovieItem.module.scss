@@ -114,9 +114,4 @@
       animation: sonarEffect 1s ease-out 75ms infinite;
     }
   }
-
-  &:focus {
-    color: colors.$MOVIEITEM_STAR_FOCUS;
-    opacity: 1;
-  }
 }
